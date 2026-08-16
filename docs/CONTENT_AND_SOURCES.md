@@ -4,13 +4,15 @@ Lessons, exercises, questions, explanations, and code examples are original mate
 
 ## Source Policy
 
-Prefer sources in this order:
+Use the primary official sources for each language:
 
-1. MDN Web Docs for learner-facing JavaScript and browser explanations.
-2. TC39 and the ECMAScript specification for normative language behavior.
-3. Node.js documentation for Node-specific APIs and command-line behavior.
+| Language | Primary sources |
+| --- | --- |
+| JavaScript | MDN JavaScript Guide, MDN JavaScript Reference, ECMAScript/TC39 |
+| TypeScript | TypeScript Handbook, TypeScript Documentation, official compiler repository |
+| Python | Python Tutorial, Python Language Reference, Python Documentation |
 
-Add a source to `data/sources.ts` with a stable ID, organization, canonical URL, and accurate type. Lessons and questions reference those IDs. Use the in-application `/fuentes` page to present the catalog; do not duplicate source metadata throughout components.
+Add a source to `data/sources.ts` with a stable ID, typed language association, organization, canonical URL, and accurate type. Language cards point to three primary source IDs; Python's license page is metadata and does not count as a fourth pedagogical source. JavaScript lessons and questions may reference additional focused MDN and Node.js entries. Use `/fuentes` to present metadata rather than duplicating it in components.
 
 Advanced JavaScript topics use focused MDN references for closures, `this`, prototypes, descriptors, classes, private elements, symbols, iteration, keyed collections, Promise concurrency, execution, modules, and `Object.freeze`. ECMAScript remains the normative language reference. Node.js event-loop documentation is used only to identify host-specific phases and priorities, not to redefine ECMAScript jobs.
 
@@ -28,6 +30,10 @@ Advanced JavaScript topics use focused MDN references for closures, `this`, prot
 ## Attribution and Licensing
 
 Record attribution or licensing notes only when the statement has been verified against the source's current terms. A link does not transfer an external work's license to this project's original content. Conversely, this project's license status does not replace the copyright or license terms attached to linked documentation.
+
+- MDN documentation is CC BY-SA 2.5 or any later version unless a page says otherwise. Code sample terms vary by date, so this project writes its own examples.
+- The official TypeScript compiler repository is Apache License 2.0. This does not establish the license of the Handbook, documentation site, or website design.
+- Python software and documentation use the Python Software Foundation License Version 2. Starting with Python 3.8.6, examples, recipes, and other documentation code are also available under the Zero-Clause BSD license.
 
 Names such as MDN, Mozilla, TC39, Ecma International, Node.js, OpenJS Foundation, and their product or project names belong to their respective owners. This independent project is not affiliated with, endorsed by, sponsored by, or approved by those organizations.
 

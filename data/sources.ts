@@ -1,13 +1,13 @@
 import type { SourceReference } from "@/types/sources";
 
-export const sources: readonly SourceReference[] = [
+const javascriptSources = [
   {
     id: "mdn-js",
     name: "JavaScript",
     organization: "Mozilla Contributors",
     url: "https://developer.mozilla.org/es/docs/Web/JavaScript",
     type: "documentation",
-    licensingNote: "El contenido de MDN se publica principalmente bajo CC BY-SA 2.5; los ejemplos de código se publican bajo CC0. Consulta cada página para confirmar sus avisos.",
+    licensingNote: "Salvo indicación de la página, la documentación MDN usa CC BY-SA 2.5 o posterior. Las muestras de código tienen términos propios según su fecha; este proyecto no las copia.",
   },
   {
     id: "mdn-guide",
@@ -15,7 +15,15 @@ export const sources: readonly SourceReference[] = [
     organization: "Mozilla Contributors",
     url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
     type: "guide",
-    licensingNote: "Referencia consultada para contraste; esta plataforma no reproduce su texto ni sus ejemplos.",
+    licensingNote: "Salvo indicación de la página, la documentación MDN usa CC BY-SA 2.5 o posterior. Aquí sólo se enlaza y se consulta.",
+  },
+  {
+    id: "mdn-reference",
+    name: "JavaScript Reference",
+    organization: "Mozilla Contributors",
+    url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference",
+    type: "documentation",
+    licensingNote: "Salvo indicación de la página, la documentación MDN usa CC BY-SA 2.5 o posterior. Aquí sólo se enlaza y se consulta.",
   },
   {
     id: "mdn-learn",
@@ -168,6 +176,72 @@ export const sources: readonly SourceReference[] = [
     type: "guide",
     note: "Referencia para distinguir fases y colas específicas del host Node.js del modelo ECMAScript.",
   },
+] as const satisfies readonly Omit<SourceReference, "languageId">[];
+
+const typescriptSources = [
+  {
+    id: "typescript-handbook",
+    name: "TypeScript Handbook",
+    organization: "Microsoft / TypeScript Contributors",
+    url: "https://www.typescriptlang.org/docs/handbook/intro.html",
+    type: "guide",
+    note: "Guía oficial de aprendizaje. No se atribuye al sitio la licencia del repositorio del compilador.",
+  },
+  {
+    id: "typescript-docs",
+    name: "TypeScript Documentation",
+    organization: "Microsoft / TypeScript Contributors",
+    url: "https://www.typescriptlang.org/docs/",
+    type: "documentation",
+    note: "Índice oficial de documentación y referencias.",
+  },
+  {
+    id: "typescript-repo",
+    name: "TypeScript official repository",
+    organization: "Microsoft",
+    url: "https://github.com/microsoft/TypeScript",
+    type: "repository",
+    licensingNote: "El repositorio del compilador publica una licencia Apache License 2.0. Esa licencia no se traslada automáticamente al Handbook ni al sitio web.",
+  },
+] as const satisfies readonly Omit<SourceReference, "languageId">[];
+
+const pythonSources = [
+  {
+    id: "python-tutorial",
+    name: "The Python Tutorial",
+    organization: "Python Software Foundation",
+    url: "https://docs.python.org/3/tutorial/",
+    type: "guide",
+  },
+  {
+    id: "python-reference",
+    name: "The Python Language Reference",
+    organization: "Python Software Foundation",
+    url: "https://docs.python.org/3/reference/",
+    type: "documentation",
+  },
+  {
+    id: "python-docs",
+    name: "Python Documentation",
+    organization: "Python Software Foundation",
+    url: "https://docs.python.org/3/",
+    type: "documentation",
+  },
+  {
+    id: "python-license",
+    name: "Python history and license",
+    organization: "Python Software Foundation",
+    url: "https://docs.python.org/3/license.html",
+    type: "license",
+    note: "Licencia y metadata; no cuenta como una cuarta fuente pedagógica.",
+    licensingNote: "El software y la documentación usan PSF License v2. Desde Python 3.8.6, ejemplos, recetas y otro código documental también usan Zero-Clause BSD.",
+  },
+] as const satisfies readonly Omit<SourceReference, "languageId">[];
+
+export const sources: readonly SourceReference[] = [
+  ...javascriptSources.map((source) => ({ ...source, languageId: "javascript" as const })),
+  ...typescriptSources.map((source) => ({ ...source, languageId: "typescript" as const })),
+  ...pythonSources.map((source) => ({ ...source, languageId: "python" as const })),
 ];
 
 export const sourcesById = new Map(sources.map((source) => [source.id, source]));

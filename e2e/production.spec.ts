@@ -3,9 +3,14 @@ import { expect, test } from "@playwright/test";
 test("production learning routes and playground are operational", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Fundamentos de la Programación" })).toBeVisible();
-  await page.getByRole("link", { name: "Elegir nivel" }).click();
+  await expect(page.getByRole("heading", { level: 2, name: "Elegí un lenguaje" })).toBeVisible();
+  await page.getByRole("article").filter({ hasText: "JavaScript" }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
   await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de JavaScript" })).toBeVisible();
+  for (const language of ["typescript", "python"] as const) {
+    await page.goto(`/${language}`);
+    await expect(page.getByText("Próximamente", { exact: true }).first()).toBeVisible();
+  }
 
   for (const level of ["facil", "medio", "dificil"] as const) {
     await page.goto(`/javascript/${level}`);

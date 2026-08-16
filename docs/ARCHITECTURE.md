@@ -1,26 +1,28 @@
 # Architecture
 
-The application keeps educational content as typed data and renders it through a small set of reusable App Router components. Quiz logic and sandbox protocol validation remain framework-independent so Node can test them directly.
+The application separates a typed language catalog from the published JavaScript curriculum. App Router renders global discovery, language hubs, and reusable learning components; quiz logic and sandbox protocol validation remain framework-independent so Node can test them directly.
 
 ## Request and Rendering Model
 
-`app/layout.tsx` provides the shared page shell. App Router pages select a level through the `facil`, `medio`, or `dificil` slug, read the corresponding data from `data/javascript/levels.ts`, and render learning components. `dynamicParams = false` limits level routes to those three generated slugs.
+`app/layout.tsx` provides the global shell. The home page derives its three language cards from `data/languages.ts`. JavaScript pages select a level through the `facil`, `medio`, or `dificil` slug and read `data/javascript/levels.ts`; `dynamicParams = false` limits those routes to the three published slugs. TypeScript and Python are informational hubs with no curriculum routes.
 
 | Area | Responsibility |
 | --- | --- |
 | `app/` | Layout, metadata, canonical routes, and legacy redirect pages. |
 | `components/layout/` | Shared header and footer. |
+| `components/languages/` | Shared informational hub for coming-soon languages. |
 | `components/learning/` | Level cards, lesson cards, exercises, code examples, and page introductions. |
 | `components/playground/` | Editor, execution coordinator, console output, validation feedback, and run readiness. |
 | `components/quiz/` | Attempt lifecycle, progress, question selection UI, scoring, and review. |
 | `components/sources/` | Lesson-level official reference links. |
 | `data/javascript/` | Easy, Medium, and Difficult lesson, exercise, and question banks. |
-| `data/sources.ts` | Central official-source catalog resolved by stable IDs. |
+| `data/languages.ts` | Typed JavaScript, TypeScript, and Python catalog with status, accent, sources, and derived JavaScript totals. |
+| `data/sources.ts` | Central official-source catalog associated with typed language IDs and resolved by stable IDs. |
 | `lib/` | Pure quiz operations, sandbox protocol guards, and generated iframe document. |
 
 ## Routes
 
-The application has 15 canonical routes: Home, Sources, the JavaScript overview, and four routes for each level: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents.
+The application has 17 canonical routes: Home, Sources, three language hubs, and four JavaScript routes for each level: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents. TypeScript and Python intentionally have no level, lesson, exercise, or quiz routes.
 
 ## Content Model
 
@@ -65,5 +67,6 @@ The generated document owns the test recorder and capability token. Learner retu
 
 - Curriculum data is authored separately from UI and protocol logic.
 - Stable IDs, not array positions or displayed order, connect questions, answers, exercises, lessons, and sources.
+- Every source belongs to an existing language; each language lists exactly its three primary references while additional JavaScript technical references remain available to published lessons.
 - Browser execution is a client capability; no learner code is sent to a server.
 - The existing architecture favors direct data-to-component rendering over an additional service or state-management layer.

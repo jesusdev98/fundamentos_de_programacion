@@ -102,6 +102,16 @@ a {
   background: #172033;
   box-shadow: 18px 18px 0 rgba(232, 93, 52, 0.25);
 }
+.language-card {
+  border-top: 4px solid var(--language-accent);
+  border-radius: 0.75rem;
+}
+.language-status {
+  color: var(--language-accent);
+}
+.language-hero {
+  background: color-mix(in srgb, var(--language-accent) 7%, var(--background));
+}
 @media (max-width: 640px) {
   .page-container {
     width: min(100% - 1.25rem, 72rem);

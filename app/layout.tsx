@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | Fundamentos de la Programación",
   },
   description:
-    "Aprende JavaScript fácil, medio y difícil con teoría, práctica ejecutable y cuestionarios.",
+    "Aprende fundamentos de programación con rutas por lenguaje, contenido original y fuentes oficiales.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 const routes = [
-  ["/", "Fundamentos de la Programación", "Elegir nivel"],
+  ["/", "Fundamentos de la Programación", "Explorar lenguajes"],
   ["/javascript", "Elige tu nivel de JavaScript", "JavaScript Fácil"],
+  ["/typescript", "TypeScript", "Tipos cotidianos"],
+  ["/python", "Python", "Sintaxis y control de flujo"],
   ["/javascript/facil", "JavaScript Fácil", "Estudiar teoría"],
   ["/javascript/facil/teoria", "Comprende antes de memorizar", "24 lecciones originales"],
   ["/javascript/facil/practica", "Convierte ideas en código", "Actualizar una puntuación"],
@@ -42,15 +44,48 @@ test("legacy routes return permanent redirects to the easy level", async ({ requ
   }
 });
 
-test("home navigates through JavaScript to Easy, Medium, and Difficult", async ({ page }) => {
+test("landing presents the catalog and navigates to every language and sources", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Elegir nivel" }).click();
+  await expect(page).toHaveTitle("Fundamentos de la Programación");
+  const catalog = page.locator("#lenguajes");
+  await expect(page.getByRole("heading", { level: 2, name: "Elegí un lenguaje" })).toBeVisible();
+  for (const name of ["JavaScript", "TypeScript", "Python"]) await expect(catalog.getByRole("heading", { level: 3, name })).toBeVisible();
+  await expect(catalog.getByRole("article").filter({ hasText: "JavaScript" }).getByText("Disponible", { exact: true })).toBeVisible();
+  for (const name of ["TypeScript", "Python"]) await expect(catalog.getByRole("article").filter({ hasText: name }).getByText("Próximamente", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Aprender con referencias confiables" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Explorar lenguajes" }).click();
+  await expect(page).toHaveURL(/\/#lenguajes$/);
+
+  await catalog.getByRole("article").filter({ hasText: "JavaScript" }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
+  await page.goto("/");
+  await page.locator("#lenguajes").getByRole("article").filter({ hasText: "Python" }).getByRole("link", { name: "Ver avance" }).click();
+  await expect(page).toHaveURL(/\/python$/);
+  await page.goto("/");
+  await page.locator("#lenguajes").getByRole("article").filter({ hasText: "TypeScript" }).getByRole("link", { name: "Ver avance" }).click();
+  await expect(page).toHaveURL(/\/typescript$/);
+  await page.getByRole("link", { name: "Fuentes", exact: true }).click();
+  await expect(page).toHaveURL(/\/fuentes$/);
+});
+
+test("global header exposes only global navigation", async ({ page }) => {
+  await page.goto("/");
+  const header = page.getByRole("banner");
+  await expect(header.getByRole("link", { name: "Lenguajes" })).toBeVisible();
+  await expect(header.getByRole("link", { name: "Fuentes" })).toBeVisible();
+  for (const level of ["Fácil", "Medio", "Difícil"]) await expect(header.getByRole("link", { name: level, exact: true })).toHaveCount(0);
+});
+
+test("JavaScript overview navigates to Easy, Medium, and Difficult", async ({ page }) => {
+  await page.goto("/javascript");
   await page.getByRole("link", { name: "Explorar nivel" }).first().click();
   await expect(page).toHaveURL(/\/javascript\/facil$/);
-  await page.getByRole("link", { name: "Medio", exact: true }).click();
+  await page.goto("/javascript");
+  await page.getByRole("link", { name: "Explorar nivel" }).nth(1).click();
   await expect(page).toHaveURL(/\/javascript\/medio$/);
-  await page.getByRole("link", { name: "Difícil", exact: true }).click();
+  await page.goto("/javascript");
+  await page.getByRole("link", { name: "Explorar nivel" }).nth(2).click();
   await expect(page).toHaveURL(/\/javascript\/dificil$/);
 });
 
@@ -70,5 +105,7 @@ test("primary navigation opens Sources without following external links", async 
   await page.getByRole("link", { name: "Fuentes", exact: true }).click();
   await expect(page).toHaveURL(/\/fuentes$/);
   await expect(page.getByRole("heading", { level: 1, name: "Fuentes y créditos" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Abrir fuente" })).toHaveCount(23);
+  await expect(page.getByRole("heading", { level: 2, name: "JavaScript" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "TypeScript" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Python" })).toBeVisible();
 });

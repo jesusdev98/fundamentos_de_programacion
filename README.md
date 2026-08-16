@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/jesusdev98/fundamentos_de_programacion/actions/workflows/ci.yml/badge.svg)](https://github.com/jesusdev98/fundamentos_de_programacion/actions/workflows/ci.yml)
 
-A public educational project for learning programming fundamentals through original Spanish-language lessons, browser practice, and reviewable quizzes.
+A public, multi-language catalog for learning programming fundamentals through original Spanish-language material and official references.
 
 ## Live Demo
 
@@ -10,7 +10,13 @@ A public educational project for learning programming fundamentals through origi
 
 ## About
 
-The current path teaches JavaScript in three progressive levels: Easy, Medium, and Difficult. Learners move from concise theory to executable exercises and ten-question quiz attempts, with feedback and links back to relevant lessons.
+The catalog covers JavaScript, TypeScript, and Python. JavaScript is the currently available curriculum; TypeScript and Python have small informational hubs and official references, but no published lessons or assessments yet.
+
+| Language | Status | Published learning content |
+| --- | --- | --- |
+| JavaScript | Available | 3 levels, 70 lessons, 38 exercises, 150 questions |
+| TypeScript | Coming soon | None |
+| Python | Coming soon | None |
 
 ## Features
 
@@ -21,7 +27,7 @@ The current path teaches JavaScript in three progressive levels: Easy, Medium, a
 - Stable content IDs and official reference links.
 - Responsive App Router interface with Node and Chromium quality gates.
 
-## Current Content
+## Current JavaScript Content
 
 | Level | Lessons | Exercises | Question bank | Per quiz |
 | --- | ---: | ---: | ---: | ---: |
@@ -93,7 +99,7 @@ docs/                Public technical and content documentation
 
 ## Official References
 
-Concepts are checked against [MDN Web Docs](https://developer.mozilla.org/), the [ECMAScript specification](https://tc39.es/ecma262/), and [Node.js documentation](https://nodejs.org/docs/latest/api/). The in-application catalog is available at `/fuentes`; source and attribution rules are documented in [Content and Sources](docs/CONTENT_AND_SOURCES.md).
+JavaScript concepts are checked against MDN, ECMAScript/TC39, and focused Node.js references. TypeScript and Python hubs link to their official documentation without claiming unpublished curriculum. The global catalog is available at `/fuentes`; source and licensing boundaries are documented in [Content and Sources](docs/CONTENT_AND_SOURCES.md).
 
 ## Contributing
 

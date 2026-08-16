@@ -30,7 +30,7 @@ The command explicitly includes only those two files and enforces 100% line, fun
 
 ## HTTP Smoke
 
-`scripts/smoke-http.mjs` starts a previously built production application on `127.0.0.1:3100`, verifies all 15 canonical routes return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
+`scripts/smoke-http.mjs` starts a previously built production application on `127.0.0.1:3100`, verifies all 17 canonical routes return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
 
 When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin without starting a local server. External redirects may use relative or absolute locations, but must remain on the requested origin and resolve to the expected path.
 
@@ -38,7 +38,7 @@ When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin wi
 
 `playwright.config.ts` uses `http://127.0.0.1:3000`, Chromium only, Desktop Chrome for the complete suite, and the official Pixel 7 Chromium device for one focused mobile spec. Local and CI runs serve an existing production build with `next start`, so run `pnpm build` before `pnpm test:e2e`. Retries and a single worker are CI-only. HTML plus console or GitHub reporting is enabled, with first-retry traces and failure-only screenshots and videos.
 
-The current normal matrix contains 22 tests across five specs: 21 Desktop Chrome tests plus one focused Mobile Chrome test. Production mode remains a separate two-test `Production Chrome` matrix.
+The current normal matrix contains 24 tests across five specs: 23 Desktop Chrome tests plus one focused Mobile Chrome test. Production mode remains a separate two-test `Production Chrome` matrix.
 
 Tests use accessible roles, labels, names, and web-first assertions. They do not use fixed sleeps, external navigation, shared test state, or app-only answer exposure. Quiz helpers import the authored banks in test code and map the visible prompt to the correct or deliberately incorrect answer text.
 
@@ -67,9 +67,10 @@ Production verification is intentionally smaller than the local suite. With `PLA
 
 | Flow | Test | Spec | Desktop | Mobile | Status |
 | --- | --- | --- | :---: | :---: | --- |
-| 15 canonical routes | HTTP status, H1, expected content, no app error | `routes.spec.ts` | Yes | No | Automated |
+| 17 canonical routes | HTTP status, H1, expected content, no app error | `routes.spec.ts` | Yes | No | Automated |
 | 4 legacy redirects | Exact 308 and `/javascript/facil*` target | `routes.spec.ts` | Yes | No | Automated |
-| Home → JavaScript → levels | Link navigation and final URLs | `routes.spec.ts` | Yes | Partial | Automated |
+| Global landing and header | Title, language states, anchor, Sources, all language hubs, global-only navigation | `routes.spec.ts` | Yes | Partial | Automated |
+| JavaScript overview → levels | Link navigation and final URLs | `routes.spec.ts` | Yes | Partial | Automated |
 | Easy/Medium/Difficult path navigation | Theory, Practice, Quiz links | `routes.spec.ts` | Yes | Partial | Automated |
 | Sources navigation | Internal route and source catalog | `routes.spec.ts` | Yes | No | Automated |
 | Easy theory | 24 lessons, examples, references, key points | `theory.spec.ts` | Yes | No | Automated |

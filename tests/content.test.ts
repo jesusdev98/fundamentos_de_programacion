@@ -10,6 +10,8 @@ import { difficultExercises } from "../data/javascript/difficult/exercises.ts";
 import { difficultLessons } from "../data/javascript/difficult/lessons.ts";
 import { difficultQuestions } from "../data/javascript/difficult/questions.ts";
 import { sources } from "../data/sources.ts";
+import { languages } from "../data/languages.ts";
+import { languageIds } from "../types/languages.ts";
 
 const levels = [
   { difficulty: "Fácil", lessons: easyLessons, exercises: easyExercises, questions: easyQuestions, counts: [24, 12, 50] },
@@ -81,4 +83,23 @@ test("global curriculum IDs, prefixes, links, and totals are stable", () => {
       if (lesson.exerciseId) assert.ok(linkedExercises.has(lesson.exerciseId));
     }
   }
+});
+
+test("language catalog and source associations are valid", () => {
+  assert.deepEqual(languages.map((language) => language.id), languageIds);
+  assert.equal(new Set(languages.map((language) => language.slug)).size, languages.length);
+  assert.equal(languages.length, 3);
+
+  const catalogIds = new Set(languages.map((language) => language.id));
+  for (const language of languages) {
+    assert.ok(language.sourceIds.every((id) => sourceIds.has(id)), `${language.id} links an unknown source`);
+  }
+  for (const source of sources) {
+    assert.ok(catalogIds.has(source.languageId), `${source.id} links an unknown language`);
+  }
+
+  const javascript = languages.find((language) => language.id === "javascript");
+  assert.deepEqual(javascript?.stats, { levels: 3, lessons: 70, exercises: 38, questions: 150 });
+  assert.equal(languages.find((language) => language.id === "typescript")?.status, "coming-soon");
+  assert.equal(languages.find((language) => language.id === "python")?.status, "coming-soon");
 });
