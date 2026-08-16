@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-for (const level of [{ slug: "facil", lessons: 24 }, { slug: "medio", lessons: 22 }] as const) {
+for (const level of [{ slug: "facil", lessons: 24 }, { slug: "medio", lessons: 22 }, { slug: "dificil", lessons: 24 }] as const) {
   test(`${level.slug} theory preserves lesson, example, and reference invariants`, async ({ page }) => {
     await page.goto(`/javascript/${level.slug}/teoria`);
     const lessons = page.locator("main article");

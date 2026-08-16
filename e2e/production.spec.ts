@@ -7,11 +7,15 @@ test("production learning routes and playground are operational", async ({ page 
   await expect(page).toHaveURL(/\/javascript$/);
   await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de JavaScript" })).toBeVisible();
 
-  for (const level of ["facil", "medio"] as const) {
+  for (const level of ["facil", "medio", "dificil"] as const) {
+    await page.goto(`/javascript/${level}`);
+    await expect(page.getByRole("link", { name: "Estudiar teoría" })).toBeVisible();
     await page.goto(`/javascript/${level}/teoria`);
     await expect(page.getByRole("heading", { level: 1, name: "Comprende antes de memorizar" })).toBeVisible();
     await page.goto(`/javascript/${level}/practica`);
     await expect(page.getByRole("heading", { level: 1, name: "Convierte ideas en código" })).toBeVisible();
+    await page.goto(`/javascript/${level}/cuestionario`);
+    await expect(page.getByRole("button", { name: "Comenzar intento" })).toBeVisible();
   }
 
   await page.goto("/javascript/facil/practica");

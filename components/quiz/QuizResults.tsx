@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Question, QuizAnswers, QuizResult } from "@/types/quiz";
+import type { LevelSlug } from "@/data/javascript/levels";
 
-export function QuizResults({ questions, answers, result, level, onRestart }: { readonly questions: readonly Question[]; readonly answers: QuizAnswers; readonly result: QuizResult; readonly level: "facil" | "medio"; readonly onRestart: () => void }) {
+export function QuizResults({ questions, answers, result, level, onRestart }: { readonly questions: readonly Question[]; readonly answers: QuizAnswers; readonly result: QuizResult; readonly level: LevelSlug; readonly onRestart: () => void }) {
   return (
     <section aria-labelledby="quiz-result-title">
       <div className="rounded-xl bg-[#172033] p-7 text-white sm:p-10"><p className="text-sm font-extrabold uppercase tracking-[0.16em] text-amber-300">Resultado</p><h2 id="quiz-result-title" className="mt-3 text-3xl font-black sm:text-4xl">{result.score}/10</h2><p className="mt-3 text-xl font-bold text-slate-300">{result.percentage}% de aciertos</p></div>

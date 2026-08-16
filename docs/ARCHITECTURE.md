@@ -4,7 +4,7 @@ The application keeps educational content as typed data and renders it through a
 
 ## Request and Rendering Model
 
-`app/layout.tsx` provides the shared page shell. App Router pages select a level through the `facil` or `medio` slug, read the corresponding data from `data/javascript/levels.ts`, and render learning components. `dynamicParams = false` limits level routes to those two generated slugs.
+`app/layout.tsx` provides the shared page shell. App Router pages select a level through the `facil`, `medio`, or `dificil` slug, read the corresponding data from `data/javascript/levels.ts`, and render learning components. `dynamicParams = false` limits level routes to those three generated slugs.
 
 | Area | Responsibility |
 | --- | --- |
@@ -14,17 +14,17 @@ The application keeps educational content as typed data and renders it through a
 | `components/playground/` | Editor, execution coordinator, console output, validation feedback, and run readiness. |
 | `components/quiz/` | Attempt lifecycle, progress, question selection UI, scoring, and review. |
 | `components/sources/` | Lesson-level official reference links. |
-| `data/javascript/` | Easy and Medium lesson, exercise, and question banks. |
+| `data/javascript/` | Easy, Medium, and Difficult lesson, exercise, and question banks. |
 | `data/sources.ts` | Central official-source catalog resolved by stable IDs. |
 | `lib/` | Pure quiz operations, sandbox protocol guards, and generated iframe document. |
 
 ## Routes
 
-The application has 11 canonical routes: Home, Sources, the JavaScript overview, and four routes for each level: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents.
+The application has 15 canonical routes: Home, Sources, the JavaScript overview, and four routes for each level: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents.
 
 ## Content Model
 
-Easy contains 24 lessons, 12 exercises, and 50 questions. Medium contains 22 lessons, 12 exercises, and 50 questions. Lessons carry explanations, code examples, key points, optional exercise links, and source IDs. Exercises carry stable IDs, starter code, hints, a solution, an explanation, and either expected output or authored tests. Questions carry stable question and answer IDs, exactly four options, one correct option, an explanation, a lesson ID, and source IDs.
+Easy contains 24 lessons, 12 exercises, and 50 questions. Medium contains 22 lessons, 12 exercises, and 50 questions. Difficult contains 24 lessons, 14 exercises, and 50 questions. The exact totals are 70 lessons, 38 exercises, and 150 questions. Lessons carry explanations, code examples, key points, optional exercise links, and source IDs. Exercises carry stable IDs, starter code, hints, a solution, an explanation, and either expected output or authored tests. Questions carry stable question and answer IDs, exactly four options, one correct option, an explanation, a lesson ID, and source IDs.
 
 ## Quiz Pipeline
 

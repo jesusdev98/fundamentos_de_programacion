@@ -6,8 +6,9 @@ import type { Question, QuizAnswers, QuizResult } from "@/types/quiz";
 import { QuizProgress } from "./QuizProgress";
 import { QuizQuestionCard } from "./QuizQuestionCard";
 import { QuizResults } from "./QuizResults";
+import type { LevelSlug } from "@/data/javascript/levels";
 
-export function Quiz({ bank, level }: { readonly bank: readonly Question[]; readonly level: "facil" | "medio" }) {
+export function Quiz({ bank, level }: { readonly bank: readonly Question[]; readonly level: LevelSlug }) {
   const [questions, setQuestions] = useState<readonly Question[] | null>(null);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});

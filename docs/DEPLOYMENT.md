@@ -29,7 +29,7 @@ Never place their values in source files, workflow arguments, logs, or documenta
 
 ## Verification
 
-The deployment job checks the same 11 canonical routes and four permanent redirects used locally, but against the stable domain. It then runs two focused Chromium production tests covering page availability, learning-level routes, playground execution, and ten-question quiz invariants.
+The deployment job checks the same 15 canonical routes and four permanent redirects used locally, but against the stable domain. It then runs two focused Chromium production tests covering page availability, all three learning-level routes, playground execution, and ten-question quiz invariants.
 
 Playwright reports and raw results are retained only when production browser verification fails.
 

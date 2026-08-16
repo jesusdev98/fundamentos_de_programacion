@@ -15,4 +15,7 @@ test("mobile smoke covers Home, navigation, one practice, and quiz", async ({ pa
   await page.getByRole("button", { name: "Comenzar intento" }).click();
   await expect(page.getByRole("radio")).toHaveCount(4);
   await expect(page.getByText("Intento actual: 10")).toBeVisible();
+  await page.getByRole("link", { name: "Difícil", exact: true }).click();
+  await expect(page).toHaveURL(/\/javascript\/dificil$/);
+  await expect(page.getByRole("heading", { level: 1, name: "JavaScript Difícil" })).toBeVisible();
 });

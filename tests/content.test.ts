@@ -6,11 +6,15 @@ import { easyQuestions } from "../data/javascript/easy/questions.ts";
 import { mediumExercises } from "../data/javascript/medium/exercises.ts";
 import { mediumLessons } from "../data/javascript/medium/lessons.ts";
 import { mediumQuestions } from "../data/javascript/medium/questions.ts";
+import { difficultExercises } from "../data/javascript/difficult/exercises.ts";
+import { difficultLessons } from "../data/javascript/difficult/lessons.ts";
+import { difficultQuestions } from "../data/javascript/difficult/questions.ts";
 import { sources } from "../data/sources.ts";
 
 const levels = [
   { difficulty: "Fácil", lessons: easyLessons, exercises: easyExercises, questions: easyQuestions, counts: [24, 12, 50] },
   { difficulty: "Medio", lessons: mediumLessons, exercises: mediumExercises, questions: mediumQuestions, counts: [22, 12, 50] },
+  { difficulty: "Difícil", lessons: difficultLessons, exercises: difficultExercises, questions: difficultQuestions, counts: [24, 14, 50] },
 ] as const;
 const sourceIds = new Set(sources.map((source) => source.id));
 
@@ -32,6 +36,11 @@ test("curriculum counts and references are valid", () => {
       assert.ok(lessonIds.has(exercise.lessonId), `${exercise.id} links an unknown lesson`);
       assert.ok(exercise.sourceIds.every((id) => sourceIds.has(id)));
       assert.ok(exercise.hints.length >= 2 && exercise.solution.length > 0);
+      assert.equal(exercise.number, level.exercises.indexOf(exercise) + 1);
+      if (level.difficulty === "Difícil") {
+        assert.equal(exercise.validation.kind, "tests", `${exercise.id} must use behavioral assertions`);
+        if (exercise.validation.kind === "tests") assert.ok(exercise.validation.tests.length > 0);
+      }
     }
     const questionIds = new Set(level.questions.map((question) => question.id));
     assert.equal(questionIds.size, 50);
@@ -43,6 +52,33 @@ test("curriculum counts and references are valid", () => {
       assert.ok(lessonIds.has(question.lessonId), `${question.id} links an unknown lesson`);
       assert.ok(question.sourceIds.every((id) => sourceIds.has(id)));
       assert.ok(question.explanation.length > 0 && question.concept.length > 0);
+    }
+    assert.equal(new Set(level.questions.map((question) => question.prompt)).size, 50);
+  }
+});
+
+test("Difficult questions cover every lesson twice plus the two required extras", () => {
+  const coverage = new Map(difficultLessons.map((lesson) => [lesson.id, 0]));
+  for (const question of difficultQuestions) coverage.set(question.lessonId, (coverage.get(question.lessonId) ?? 0) + 1);
+  for (const lesson of difficultLessons) {
+    const expected = ["difficult-promise-combinators", "difficult-event-loop"].includes(lesson.id) ? 3 : 2;
+    assert.equal(coverage.get(lesson.id), expected, lesson.id);
+  }
+});
+
+test("global curriculum IDs, prefixes, links, and totals are stable", () => {
+  const allLessons = levels.flatMap((level) => [...level.lessons]);
+  const allExercises = levels.flatMap((level) => [...level.exercises]);
+  const allQuestions = levels.flatMap((level) => [...level.questions]);
+  assert.deepEqual([allLessons.length, allExercises.length, allQuestions.length], [70, 38, 150]);
+  for (const collection of [allLessons, allExercises, allQuestions]) {
+    assert.equal(new Set(collection.map((item) => item.id)).size, collection.length);
+  }
+  for (const [prefix, level] of [["easy-", levels[0]], ["medium-", levels[1]], ["difficult-", levels[2]]] as const) {
+    assert.ok([...level.lessons, ...level.exercises, ...level.questions].every((item) => item.id.startsWith(prefix)));
+    const linkedExercises = new Set(level.exercises.map((exercise) => exercise.id));
+    for (const lesson of level.lessons) {
+      if (lesson.exerciseId) assert.ok(linkedExercises.has(lesson.exerciseId));
     }
   }
 });

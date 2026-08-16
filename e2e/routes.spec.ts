@@ -11,6 +11,10 @@ const routes = [
   ["/javascript/medio/teoria", "Comprende antes de memorizar", "22 lecciones originales"],
   ["/javascript/medio/practica", "Convierte ideas en código", "Conversión con arrow"],
   ["/javascript/medio/cuestionario", "Comprueba y repasa", "Banco: 50"],
+  ["/javascript/dificil", "JavaScript Difícil", "24 lecciones"],
+  ["/javascript/dificil/teoria", "Comprende antes de memorizar", "24 lecciones originales"],
+  ["/javascript/dificil/practica", "Convierte ideas en código", "Contador mediante closure"],
+  ["/javascript/dificil/cuestionario", "Comprueba y repasa", "Banco: 50"],
   ["/fuentes", "Fuentes y créditos", "Mozilla Contributors"],
 ] as const;
 
@@ -38,7 +42,7 @@ test("legacy routes return permanent redirects to the easy level", async ({ requ
   }
 });
 
-test("home navigates through JavaScript to Easy and Medium", async ({ page }) => {
+test("home navigates through JavaScript to Easy, Medium, and Difficult", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Elegir nivel" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
@@ -46,9 +50,11 @@ test("home navigates through JavaScript to Easy and Medium", async ({ page }) =>
   await expect(page).toHaveURL(/\/javascript\/facil$/);
   await page.getByRole("link", { name: "Medio", exact: true }).click();
   await expect(page).toHaveURL(/\/javascript\/medio$/);
+  await page.getByRole("link", { name: "Difícil", exact: true }).click();
+  await expect(page).toHaveURL(/\/javascript\/dificil$/);
 });
 
-for (const level of ["facil", "medio"] as const) {
+for (const level of ["facil", "medio", "dificil"] as const) {
   test(`${level} level navigates to theory, practice, and quiz`, async ({ page }) => {
     await page.goto(`/javascript/${level}`);
     for (const [name, suffix] of [["Estudiar teoría", "teoria"], ["Abrir práctica", "practica"], ["Comenzar cuestionario", "cuestionario"]] as const) {
@@ -64,5 +70,5 @@ test("primary navigation opens Sources without following external links", async 
   await page.getByRole("link", { name: "Fuentes", exact: true }).click();
   await expect(page).toHaveURL(/\/fuentes$/);
   await expect(page.getByRole("heading", { level: 1, name: "Fuentes y créditos" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Abrir fuente" })).toHaveCount(8);
+  await expect(page.getByRole("link", { name: "Abrir fuente" })).toHaveCount(23);
 });

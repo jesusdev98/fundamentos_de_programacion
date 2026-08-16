@@ -10,11 +10,12 @@ export function question(
   options: readonly [string, string, string, string],
   correctIndex: 0 | 1 | 2 | 3,
   explanation: string,
+  sourceIds: readonly string[] = ["mdn-js", "ecma-262"],
 ): Question {
   const answers = options.map((text, index) => ({
     id: `${id}-${String.fromCharCode(97 + index)}`,
     text,
     correct: index === correctIndex,
   })) as [Answer, Answer, Answer, Answer];
-  return { id, lessonId, concept, prompt, answers, explanation, difficulty, sourceIds: ["mdn-js", "ecma-262"] };
+  return { id, lessonId, concept, prompt, answers, explanation, difficulty, sourceIds };
 }

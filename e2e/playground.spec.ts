@@ -1,8 +1,10 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { easyExercises } from "../data/javascript/easy/exercises";
 import { mediumExercises } from "../data/javascript/medium/exercises";
+import { difficultExercises } from "../data/javascript/difficult/exercises";
+import type { LevelSlug } from "../data/javascript/levels";
 
-async function openExercise(page: Page, level: "facil" | "medio", index = 0) {
+async function openExercise(page: Page, level: LevelSlug, index = 0) {
   await page.goto(`/javascript/${level}/practica`);
   const exercise = page.locator("main article").nth(index);
   await expect(exercise.getByText("Entorno listo", { exact: true })).toBeVisible();
@@ -64,4 +66,19 @@ test("a stable Medium map exercise passes its authored browser tests", async ({ 
   await run(exercise, mediumExercises[2].solution);
   await expect(exercise.getByText("Correcto", { exact: true })).toBeVisible();
   await expect(exercise.getByRole("region", { name: "Salida de consola" })).toContainText("Transforma todos los temas");
+});
+
+test("all Difficult solutions pass their authored assertions and reveal explanations", async ({ page }) => {
+  test.slow();
+  await page.goto("/javascript/dificil/practica");
+  const exercises = page.locator("main article");
+  await expect(exercises).toHaveCount(difficultExercises.length);
+  for (const [index, authored] of difficultExercises.entries()) {
+    const exercise = exercises.nth(index);
+    await expect(exercise.getByText("Entorno listo", { exact: true })).toBeVisible();
+    await run(exercise, authored.solution);
+    await expect(exercise.getByText("Correcto", { exact: true })).toBeVisible();
+    await expect(exercise.getByText("Explicación:")).toBeVisible();
+  }
+  await expect(exercises.first().getByRole("region", { name: "Salida de consola" })).toContainText("Mantiene una secuencia");
 });

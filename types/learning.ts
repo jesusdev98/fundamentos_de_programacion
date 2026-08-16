@@ -1,5 +1,5 @@
-export type Level = "easy" | "medium";
-export type Difficulty = "Fácil" | "Medio";
+export type Level = "easy" | "medium" | "difficult";
+export type Difficulty = "Fácil" | "Medio" | "Difícil";
 
 export type CodeExample = {
   readonly code: string;

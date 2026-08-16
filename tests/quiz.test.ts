@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { easyQuestions } from "../data/javascript/easy/questions.ts";
+import { difficultQuestions } from "../data/javascript/difficult/questions.ts";
+import { mediumQuestions } from "../data/javascript/medium/questions.ts";
 import { createQuizAttempt, evaluateQuiz, shuffle } from "../lib/quiz.ts";
 
 function deterministic(values: readonly number[]) { let index = 0; return () => values[index++ % values.length]; }
@@ -13,6 +15,15 @@ test("attempt selects ten unique IDs and preserves each correct answer", () => {
   for (const question of attempt) {
     assert.equal(question.answers.filter((answer) => answer.correct).length, 1);
     assert.equal(question.answers.find((answer) => answer.correct)?.id, originalCorrect.get(question.id));
+  }
+});
+
+test("every level bank produces a deterministic ten-question attempt", () => {
+  for (const bank of [easyQuestions, mediumQuestions, difficultQuestions]) {
+    const attempt = createQuizAttempt(bank, 10, deterministic([0.05, 0.25, 0.5, 0.75]));
+    assert.equal(attempt.length, 10);
+    assert.equal(new Set(attempt.map((question) => question.id)).size, 10);
+    assert.ok(attempt.every((question) => question.answers.length === 4));
   }
 });
 

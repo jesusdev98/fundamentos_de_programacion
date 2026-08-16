@@ -2,6 +2,7 @@ import type { Lesson } from "@/types/learning";
 import Link from "next/link";
 import { SourceLinks } from "@/components/sources/SourceLinks";
 import { CodeBlock } from "./CodeBlock";
+import type { LevelSlug } from "@/data/javascript/levels";
 
 export function LessonCard({
   lesson,
@@ -10,7 +11,7 @@ export function LessonCard({
 }: {
   readonly lesson: Lesson;
   readonly number: number;
-  readonly level: "facil" | "medio";
+  readonly level: LevelSlug;
 }) {
   return (
     <article

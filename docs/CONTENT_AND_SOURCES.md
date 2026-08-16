@@ -12,12 +12,16 @@ Prefer sources in this order:
 
 Add a source to `data/sources.ts` with a stable ID, organization, canonical URL, and accurate type. Lessons and questions reference those IDs. Use the in-application `/fuentes` page to present the catalog; do not duplicate source metadata throughout components.
 
+Advanced JavaScript topics use focused MDN references for closures, `this`, prototypes, descriptors, classes, private elements, symbols, iteration, keyed collections, Promise concurrency, execution, modules, and `Object.freeze`. ECMAScript remains the normative language reference. Node.js event-loop documentation is used only to identify host-specific phases and priorities, not to redefine ECMAScript jobs.
+
 ## Writing Rules
 
 - Explain the concept in original words appropriate to the level.
 - Write new examples that serve the lesson rather than copying documentation examples.
 - Keep claims consistent with the linked primary source.
 - Separate ECMAScript language behavior from browser, Node.js, or playground-specific APIs.
+- Keep module syntax theoretical while the playground intentionally blocks module loading; never weaken the sandbox to make an example executable.
+- Do not claim that weak collections can be enumerated or that a test can prove garbage collection occurred.
 - Preserve stable lesson, exercise, question, answer, and source IDs after publication.
 - Link to external material for depth instead of reproducing substantial prose, tables, diagrams, or code.
 

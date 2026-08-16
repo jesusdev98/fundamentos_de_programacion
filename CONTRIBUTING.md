@@ -15,7 +15,7 @@ Use a short-lived branch from current `main`. Keep each change scoped; do not mi
 ## Curriculum Changes
 
 - Write lessons, examples, exercises, questions, and explanations in original language.
-- Keep Easy and Medium difficulty consistent with neighboring content.
+- Keep Easy, Medium, and Difficult difficulty consistent with neighboring content.
 - Give every lesson, exercise, question, answer, and source a unique stable ID.
 - Do not rename published IDs merely for style; links, quiz review, and tests depend on them.
 - Questions must have exactly four options and exactly one correct answer.

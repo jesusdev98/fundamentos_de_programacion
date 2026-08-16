@@ -10,7 +10,7 @@ A public educational project for learning programming fundamentals through origi
 
 ## About
 
-The current path teaches JavaScript in two progressive levels. Learners move from concise theory to executable exercises and ten-question quiz attempts, with feedback and links back to relevant lessons.
+The current path teaches JavaScript in three progressive levels: Easy, Medium, and Difficult. Learners move from concise theory to executable exercises and ten-question quiz attempts, with feedback and links back to relevant lessons.
 
 ## Features
 
@@ -27,6 +27,8 @@ The current path teaches JavaScript in two progressive levels. Learners move fro
 | --- | ---: | ---: | ---: | ---: |
 | JavaScript Easy | 24 | 12 | 50 | 10 |
 | JavaScript Medium | 22 | 12 | 50 | 10 |
+| JavaScript Difficult | 24 | 14 | 50 | 10 |
+| **Total** | **70** | **38** | **150** | **10 per level** |
 
 ## Tech Stack
 
