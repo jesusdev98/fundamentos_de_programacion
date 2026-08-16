@@ -48,7 +48,7 @@ test("landing presents the catalog and navigates to every language and sources",
   await page.goto("/");
   await expect(page).toHaveTitle("Fundamentos de la Programación");
   const catalog = page.locator("#lenguajes");
-  await expect(page.getByRole("heading", { level: 2, name: "Elegí un lenguaje" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Elige un lenguaje" })).toBeVisible();
   for (const name of ["JavaScript", "TypeScript", "Python"]) await expect(catalog.getByRole("heading", { level: 3, name })).toBeVisible();
   await expect(catalog.getByRole("article").filter({ hasText: "JavaScript" }).getByText("Disponible", { exact: true })).toBeVisible();
   for (const name of ["TypeScript", "Python"]) await expect(catalog.getByRole("article").filter({ hasText: name }).getByText("Próximamente", { exact: true })).toBeVisible();

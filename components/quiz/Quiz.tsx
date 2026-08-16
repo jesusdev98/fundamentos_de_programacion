@@ -14,7 +14,7 @@ export function Quiz({ bank, level }: { readonly bank: readonly Question[]; read
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [result, setResult] = useState<QuizResult | null>(null);
   function start() { setQuestions(createQuizAttempt(bank)); setAnswers({}); setCurrent(0); setResult(null); }
-  if (!questions) return <section className="rounded-xl border border-slate-200 bg-white p-7 text-center"><p className="font-black text-slate-950">Banco: 50 / Intento actual: 10</p><p className="mt-3 text-slate-600">Cada intento toma diez preguntas únicas y mezcla sus respuestas.</p><button className="primary-button mt-6" type="button" onClick={start}>Comenzar intento</button></section>;
+  if (!questions) return <section className="rounded-xl border border-slate-200 bg-white p-7 text-center"><p className="font-black text-slate-950">Banco: 50 / Intento actual: 10</p><p className="mt-3 text-slate-600">Cada intento selecciona diez preguntas únicas y baraja sus respuestas.</p><button className="primary-button mt-6" type="button" onClick={start}>Comenzar intento</button></section>;
   if (result) return <QuizResults questions={questions} answers={answers} result={result} level={level} onRestart={start} />;
   const answered = Object.keys(answers).length;
   const allAnswered = answered === questions.length;

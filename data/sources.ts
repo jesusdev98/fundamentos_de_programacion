@@ -233,7 +233,7 @@ const pythonSources = [
     organization: "Python Software Foundation",
     url: "https://docs.python.org/3/license.html",
     type: "license",
-    note: "Licencia y metadata; no cuenta como una cuarta fuente pedagógica.",
+    note: "Licencia y metadatos; no cuenta como una cuarta fuente pedagógica.",
     licensingNote: "El software y la documentación usan PSF License v2. Desde Python 3.8.6, ejemplos, recetas y otro código documental también usan Zero-Clause BSD.",
   },
 ] as const satisfies readonly Omit<SourceReference, "languageId">[];

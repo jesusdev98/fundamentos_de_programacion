@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 import { easyExercises } from "../data/javascript/easy/exercises.ts";
 import { easyLessons } from "../data/javascript/easy/lessons.ts";
@@ -19,6 +21,27 @@ const levels = [
   { difficulty: "Difícil", lessons: difficultLessons, exercises: difficultExercises, questions: difficultQuestions, counts: [24, 14, 50] },
 ] as const;
 const sourceIds = new Set(sources.map((source) => source.id));
+
+function userFacingFiles(path: string): readonly string[] {
+  return readdirSync(path, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = join(path, entry.name);
+    if (entry.isDirectory()) return userFacingFiles(entryPath);
+    return /\.(?:ts|tsx)$/.test(entry.name) ? [entryPath] : [];
+  });
+}
+
+test("user-facing copy excludes prohibited voseo forms", () => {
+  const prohibitedForms = /(?<!\p{L})(?:elegí|construí|probá|hacé|mirá|usá|ingresá|completá)(?!\p{L})/giu;
+  const files = [
+    ...userFacingFiles("app"),
+    ...userFacingFiles("components"),
+    ...userFacingFiles("data/javascript"),
+    "data/languages.ts",
+    "data/sources.ts",
+  ];
+  const violations = files.flatMap((file) => [...readFileSync(file, "utf8").matchAll(prohibitedForms)].map((match) => `${file}: ${match[0]}`));
+  assert.deepEqual(violations, []);
+});
 
 test("curriculum counts and references are valid", () => {
   for (const level of levels) {

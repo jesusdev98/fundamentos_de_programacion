@@ -91,7 +91,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
     }
     const port = portRef.current;
     if (!port) {
-      setResult({ version: SANDBOX_VERSION, type: "result", nonce, runId: "not-ready", messages: [{ kind: "error", text: "El entorno todavía se está preparando. Intenta de nuevo." }], tests: [], timedOut: false });
+      setResult({ version: SANDBOX_VERSION, type: "result", nonce, runId: "not-ready", messages: [{ kind: "error", text: "El entorno todavía se está preparando. Vuelve a intentarlo." }], tests: [], timedOut: false });
       return;
     }
     setRunning(true);
@@ -131,7 +131,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
       <CodeEditor id={editorId} value={code} disabled={running} onChange={setCode} onRun={run} />
       <div className="flex flex-wrap items-center justify-between gap-3"><RunButton ready={sandboxReady} running={running} onRun={run} /><ExerciseFeedback status={running ? "executed" : status} /></div>
       <ConsoleOutput messages={result?.messages ?? []} tests={result?.tests ?? []} />
-      <p className="text-xs leading-5 text-slate-500">Ejecuta core JavaScript dentro de un Worker aislado. No admite DOM, red, import ni export. El cuerpo es async, por lo que acepta Promises y await, pero no equivale exactamente a un script global.</p>
+      <p className="text-xs leading-5 text-slate-500">Ejecuta el núcleo de JavaScript dentro de un Worker aislado. No admite DOM, red, import ni export. El cuerpo es async, por lo que acepta Promises y await, pero no equivale exactamente a un script global.</p>
     </div>
   );
 }

@@ -40,7 +40,7 @@ test("answering from the real Easy bank yields 10/10, 100%, and no pending revie
   await page.getByRole("button", { name: "Finalizar cuestionario" }).click();
   await expect(page.getByRole("heading", { name: "10/10" })).toBeVisible();
   await expect(page.getByText("100% de aciertos")).toBeVisible();
-  await expect(page.getByText("dominaste todos los temas")).toBeVisible();
+  await expect(page.getByText("has dominado todos los temas")).toBeVisible();
   await expect(page.getByRole("link", { name: "Repasar este tema" })).toHaveCount(0);
 });
 
@@ -57,5 +57,5 @@ test("Difficult quiz verifies ten four-option questions, review, reset, and a pe
   await page.getByRole("button", { name: "Finalizar cuestionario" }).click();
   await expect(page.getByRole("heading", { name: "10/10" })).toBeVisible();
   await expect(page.getByText("100% de aciertos")).toBeVisible();
-  await expect(page.getByText("dominaste todos los temas")).toBeVisible();
+  await expect(page.getByText("has dominado todos los temas")).toBeVisible();
 });

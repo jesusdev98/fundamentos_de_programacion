@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("production learning routes and playground are operational", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Fundamentos de la Programación" })).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "Elegí un lenguaje" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Elige un lenguaje" })).toBeVisible();
   await page.getByRole("article").filter({ hasText: "JavaScript" }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
   await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de JavaScript" })).toBeVisible();

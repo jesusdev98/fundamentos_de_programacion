@@ -3,6 +3,14 @@ import { PageIntro } from "@/components/learning/PageIntro";
 import { languages } from "@/data/languages";
 import { resolveSources, sources } from "@/data/sources";
 
+const sourceTypeLabels = {
+  documentation: "Documentación",
+  standard: "Estándar",
+  guide: "Guía",
+  repository: "Repositorio",
+  license: "Licencia",
+} as const;
+
 export const metadata: Metadata = { title: "Fuentes y créditos" };
 
 export default function SourcesPage() {
@@ -34,5 +42,5 @@ export default function SourcesPage() {
 }
 
 function SourceCard({ source }: { source: (typeof sources)[number] }) {
-  return <article className="border border-slate-200 bg-white p-5"><p className="eyebrow">{source.type}</p><h3 className="mt-3 text-lg font-black text-slate-950">{source.name}</h3><p className="mt-1 text-sm text-slate-500">{source.organization}</p>{source.note ? <p className="mt-3 text-sm leading-6 text-slate-600">{source.note}</p> : null}{source.licensingNote ? <p className="mt-3 text-xs leading-5 text-slate-500">{source.licensingNote}</p> : null}<a className="mt-4 inline-block font-bold text-[#9f3418] underline underline-offset-4" href={source.url} target="_blank" rel="noopener noreferrer">Abrir fuente</a></article>;
+  return <article className="border border-slate-200 bg-white p-5"><p className="eyebrow">{sourceTypeLabels[source.type]}</p><h3 className="mt-3 text-lg font-black text-slate-950">{source.name}</h3><p className="mt-1 text-sm text-slate-500">{source.organization}</p>{source.note ? <p className="mt-3 text-sm leading-6 text-slate-600">{source.note}</p> : null}{source.licensingNote ? <p className="mt-3 text-xs leading-5 text-slate-500">{source.licensingNote}</p> : null}<a className="mt-4 inline-block font-bold text-[#9f3418] underline underline-offset-4" href={source.url} target="_blank" rel="noopener noreferrer">Abrir fuente</a></article>;
 }

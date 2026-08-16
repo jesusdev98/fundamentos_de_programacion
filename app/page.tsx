@@ -11,14 +11,14 @@ export default function Home() {
         <div className="page-container py-20 sm:py-24 lg:py-28">
           <p className="eyebrow">Aprende razonando</p>
           <h1 className="mt-5 max-w-4xl text-5xl font-black tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-7xl">Fundamentos de la Programación</h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">Construí una base que puedas trasladar entre lenguajes: conceptos claros, práctica deliberada y referencias oficiales.</p>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">Construye una base que puedas trasladar entre lenguajes: conceptos claros, práctica deliberada y referencias oficiales.</p>
           <Link className="primary-button mt-9" href="#lenguajes">Explorar lenguajes</Link>
         </div>
       </section>
 
       <section className="page-container scroll-mt-8 py-16 lg:py-20" id="lenguajes">
         <p className="eyebrow">Catálogo</p>
-        <h2 className="section-title mt-3">Elegí un lenguaje</h2>
+        <h2 className="section-title mt-3">Elige un lenguaje</h2>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Una entrada clara para cada ruta. JavaScript ya está disponible; TypeScript y Python muestran el alcance previsto sin simular contenido.</p>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {languages.map((language) => (
