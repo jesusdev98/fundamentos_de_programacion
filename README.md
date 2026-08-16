@@ -4,6 +4,10 @@
 
 A public educational project for learning programming fundamentals through original Spanish-language lessons, browser practice, and reviewable quizzes.
 
+## Live Demo
+
+[Open the production learning platform](https://aprendeconjesusdev.vercel.app).
+
 ## About
 
 The current path teaches JavaScript in two progressive levels. Learners move from concise theory to executable exercises and ten-question quiz attempts, with feedback and links back to relevant lessons.
@@ -51,7 +55,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `pnpm lint` | Run ESLint. |
 | `pnpm test` | Run the Node test suite. |
 | `pnpm test:coverage` | Enforce 100% coverage for `lib/quiz.ts` and `lib/sandbox.ts` only. |
-| `pnpm test:e2e` | Run Playwright on desktop and focused mobile Chromium projects. |
+| `pnpm test:e2e` | Run Playwright on desktop and focused mobile Chromium projects against an existing `pnpm build`. |
 | `pnpm test:e2e:ui` | Open Playwright UI mode. |
 | `pnpm test:e2e:headed` | Run Playwright with a visible browser. |
 | `pnpm verify:http` | Smoke-test production routes and redirects after a build. |
@@ -59,7 +63,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Quality
 
-GitHub Actions runs core tests, scoped coverage, lint, a production build, Chromium E2E, and production HTTP smoke checks. E2E flow coverage and Node code coverage are separate signals; see the testing guide for the exact boundary.
+GitHub Actions runs core tests, scoped coverage, lint, a production build, Chromium E2E, and production HTTP smoke checks. On pushes to `main`, a successful quality job is followed by a Vercel Production deployment and focused checks against the stable domain. Pull requests never deploy.
+
+Status: `main` push → quality → Vercel Production.
 
 ## Project Structure
 
@@ -78,6 +84,7 @@ docs/                Public technical and content documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Testing](docs/TESTING.md)
+- [Deployment](docs/DEPLOYMENT.md)
 - [Security](docs/SECURITY.md)
 - [Content and Sources](docs/CONTENT_AND_SOURCES.md)
 - [Contributing](CONTRIBUTING.md)

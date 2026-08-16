@@ -9,6 +9,7 @@ corepack pnpm@11.1.2 install
 corepack pnpm@11.1.2 exec playwright install chromium
 corepack pnpm@11.1.2 test
 corepack pnpm@11.1.2 test:coverage
+corepack pnpm@11.1.2 build
 corepack pnpm@11.1.2 test:e2e
 ```
 
@@ -31,13 +32,17 @@ The command explicitly includes only those two files and enforces 100% line, fun
 
 `scripts/smoke-http.mjs` starts a previously built production application on `127.0.0.1:3100`, verifies all 11 canonical routes return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
 
+When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin without starting a local server. External redirects may use relative or absolute locations, but must remain on the requested origin and resolve to the expected path.
+
 ## Playwright
 
-`playwright.config.ts` uses `http://127.0.0.1:3000`, Chromium only, Desktop Chrome for the complete suite, and the official Pixel 7 Chromium device for one focused mobile spec. Local runs start the development server; CI serves the production build. Retries and a single worker are CI-only. HTML plus console or GitHub reporting is enabled, with first-retry traces and failure-only screenshots and videos.
+`playwright.config.ts` uses `http://127.0.0.1:3000`, Chromium only, Desktop Chrome for the complete suite, and the official Pixel 7 Chromium device for one focused mobile spec. Local and CI runs serve an existing production build with `next start`, so run `pnpm build` before `pnpm test:e2e`. Retries and a single worker are CI-only. HTML plus console or GitHub reporting is enabled, with first-retry traces and failure-only screenshots and videos.
 
 Tests use accessible roles, labels, names, and web-first assertions. They do not use fixed sleeps, external navigation, shared test state, or app-only answer exposure. Quiz helpers import the authored banks in test code and map the visible prompt to the correct or deliberately incorrect answer text.
 
 E2E coverage describes verified user flows. It is not source-code coverage and does not contribute to Node's percentages.
+
+Production verification is intentionally smaller than the local suite. With `PLAYWRIGHT_PRODUCTION=1` and an HTTPS `PLAYWRIGHT_BASE_URL`, Playwright runs only `production.spec.ts` in the `Production Chrome` project and does not start a web server. The normal `pnpm test:e2e` command continues to run only Desktop Chrome and focused Mobile Chrome tests locally.
 
 ## Scripts
 
@@ -46,7 +51,7 @@ E2E coverage describes verified user flows. It is not source-code coverage and d
 | `pnpm test` | All Node tests. |
 | `pnpm verify:quiz` | Focused quiz Node tests. |
 | `pnpm test:coverage` | 100% thresholds for the two explicit core files. |
-| `pnpm test:e2e` | Headless desktop suite plus focused mobile smoke. |
+| `pnpm test:e2e` | Headless desktop suite plus focused mobile smoke against an existing production build. |
 | `pnpm test:e2e:ui` | Interactive Playwright UI. |
 | `pnpm test:e2e:headed` | Visible-browser Playwright execution. |
 | `pnpm verify:http` | Built production server routes and redirects. |
@@ -54,7 +59,7 @@ E2E coverage describes verified user flows. It is not source-code coverage and d
 
 ## CI
 
-`.github/workflows/ci.yml` runs on pushes and pull requests targeting `main`. One sequential `quality` job installs with the frozen pnpm lockfile, then runs core tests, scoped coverage, lint, production build, Chromium installation with OS dependencies, E2E, and HTTP smoke. Playwright reports and raw test results upload only when the job fails and is not cancelled.
+`.github/workflows/ci.yml` runs on pushes and pull requests targeting `main` as a two-job DAG. `quality` installs with the frozen pnpm lockfile, then runs core tests, scoped coverage, lint, production build, Chromium installation with OS dependencies, E2E, and local HTTP smoke. `deploy-production` depends on `quality` and runs only for pushes to `main`; it deploys prebuilt Vercel artifacts, then runs HTTP and focused Playwright verification against the stable production domain. Pull requests and failed quality runs do not deploy. Playwright reports and raw test results upload only when their job fails and is not cancelled.
 
 ## Critical Flow Matrix
 
