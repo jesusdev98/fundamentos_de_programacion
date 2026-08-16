@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8faf7;
+  --foreground: #172033;
+  --accent: #e85d34;
+  --accent-dark: #bd3f1d;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+.page-container {
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+}
+.hero-grid {
+  background-color: #eef4eb;
+  background-image:
+    linear-gradient(rgba(23, 32, 51, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 32, 51, 0.055) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.eyebrow {
+  color: var(--accent-dark);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.section-title {
+  color: #0f172a;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.65rem;
+  padding: 0.7rem 1.15rem;
+  font-weight: 800;
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+.primary-button {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 0 #9f3418;
+}
+.primary-button:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+.primary-button:disabled {
+  cursor: not-allowed;
+  background: #94a3b8;
+  box-shadow: 0 4px 0 #64748b;
+  transform: none;
+}
+.secondary-button {
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #1e293b;
+}
+.secondary-button:hover {
+  border-color: #64748b;
+  background: #f8fafc;
+}
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.code-window {
+  overflow: hidden;
+  border: 1px solid #334155;
+  border-radius: 1rem;
+  background: #172033;
+  box-shadow: 18px 18px 0 rgba(232, 93, 52, 0.25);
+}
+@media (max-width: 640px) {
+  .page-container {
+    width: min(100% - 1.25rem, 72rem);
+  }
+}
