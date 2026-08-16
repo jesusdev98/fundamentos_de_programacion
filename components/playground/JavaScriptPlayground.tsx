@@ -21,6 +21,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
   const [code, setCode] = useState(exercise.starterCode);
   const [result, setResult] = useState<SandboxRunResult | null>(null);
   const [running, setRunning] = useState(false);
+  const [sandboxReady, setSandboxReady] = useState(false);
   const [revision, setRevision] = useState(0);
   const nonce = `${exercise.id}-${revision}-${useId().replace(/:/g, "")}`;
 
@@ -55,6 +56,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
           portRef.current?.close();
           portRef.current = channel.port1;
           candidatePort = null;
+          setSandboxReady(true);
           return;
         }
         const pending = pendingRef.current;
@@ -72,6 +74,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
     connect();
     return () => {
       disposed = true;
+      setSandboxReady(false);
       window.removeEventListener("message", receive);
       connectRef.current = () => undefined;
       candidatePort?.close();
@@ -81,7 +84,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
   }, [nonce]);
 
   function run() {
-    if (running || pendingRef.current) return;
+    if (running || !sandboxReady || pendingRef.current) return;
     if (code.length > MAX_CODE_LENGTH) {
       setResult({ version: SANDBOX_VERSION, type: "result", nonce, runId: "size", messages: [{ kind: "error", text: `El código supera el límite de ${MAX_CODE_LENGTH} caracteres.` }], tests: [], timedOut: false });
       return;
@@ -104,6 +107,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
       pendingRef.current = null;
       setResult(timeoutResult);
       setRunning(false);
+      setSandboxReady(false);
       setRevision((value) => value + 1);
     }, window.setTimeout.bind(window));
     pendingRef.current = { runId, finish: (nextResult) => {
@@ -125,7 +129,7 @@ export function JavaScriptPlayground({ exercise, onCorrect }: { readonly exercis
     <div className="mt-6 space-y-4">
       <iframe key={revision} ref={iframeRef} title="Sandbox aislado de JavaScript" sandbox="allow-scripts" srcDoc={createSandboxDocument(nonce, SANDBOX_DOCUMENT_OPTIONS)} onLoad={() => connectRef.current()} className="hidden" />
       <CodeEditor id={editorId} value={code} disabled={running} onChange={setCode} onRun={run} />
-      <div className="flex flex-wrap items-center justify-between gap-3"><RunButton running={running} onRun={run} /><ExerciseFeedback status={running ? "executed" : status} /></div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><RunButton ready={sandboxReady} running={running} onRun={run} /><ExerciseFeedback status={running ? "executed" : status} /></div>
       <ConsoleOutput messages={result?.messages ?? []} tests={result?.tests ?? []} />
       <p className="text-xs leading-5 text-slate-500">Ejecuta core JavaScript dentro de un Worker aislado. No admite DOM, red, import ni export. El cuerpo es async, por lo que acepta Promises y await, pero no equivale exactamente a un script global.</p>
     </div>

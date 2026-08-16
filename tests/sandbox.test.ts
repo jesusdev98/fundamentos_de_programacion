@@ -12,6 +12,10 @@ test("sandbox protocol rejects mismatched identity and normalizes output", () =>
   assert.equal(isSandboxResult(result, "n", "r"), true);
   assert.equal(isSandboxResult(result, "other", "r"), false);
   assert.deepEqual(normalizeOutput(result.messages), ["Hola mundo"]);
+  assert.deepEqual(normalizeOutput([{ kind: "warn", text: "ignore" }, { kind: "error", text: "ignore" }, { kind: "result", text: "  cinco   elementos " }]), ["cinco elementos"]);
+  for (const malformed of [null, false, "result", {}, { ...result, messages: null }, { ...result, tests: null }, { ...result, timedOut: "false" }, { ...result, runId: "other" }]) {
+    assert.equal(isSandboxResult(malformed, "n", "r"), false);
+  }
 });
 
 test("sandbox handshake validates version, nonce and connection identity", () => {
@@ -19,12 +23,16 @@ test("sandbox handshake validates version, nonce and connection identity", () =>
   assert.equal(isSandboxReady({ version: 1, type: "ready", nonce: "other" }, "n"), false);
   assert.equal(isSandboxConnected({ version: 1, type: "connected", nonce: "n", connectionId: "c" }, "n", "c"), true);
   assert.equal(isSandboxConnected({ version: 1, type: "connected", nonce: "n", connectionId: "old" }, "n", "c"), false);
+  for (const malformed of [null, false, "ready", {}, { version: 2, type: "ready", nonce: "n" }, { version: 1, type: "other", nonce: "n" }]) assert.equal(isSandboxReady(malformed, "n"), false);
+  for (const malformed of [null, false, "connected", {}, { version: 2, type: "connected", nonce: "n", connectionId: "c" }, { version: 1, type: "other", nonce: "n", connectionId: "c" }]) assert.equal(isSandboxConnected(malformed, "n", "c"), false);
 });
 
 test("exercise validation handles output, tests, errors and timeout", () => {
   assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola mundo"] }, result), true);
   assert.equal(validateExerciseResult({ kind: "tests", tests: [{ id: "t", label: "test", expression: "true", assertion: "truthy" }] }, result), true);
   assert.equal(validateExerciseResult({ kind: "output", expected: ["otro"] }, result), false);
+  assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola    mundo"] }, result), true);
+  assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola mundo", "extra"] }, result), false);
   assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola mundo"] }, { ...result, timedOut: true }), false);
   assert.equal(validateExerciseResult({ kind: "output", expected: [] }, { ...result, messages: [{ kind: "error", text: "ReferenceError" }] }), false);
 });
@@ -39,6 +47,14 @@ test("watchdog scheduling is testable without waiting", () => {
   assert.equal(PARENT_WATCHDOG_MS > WORKER_TIMEOUT_MS, true);
 });
 
+test("watchdog uses the platform scheduler by default", async () => {
+  await new Promise<void>((resolve) => {
+    const timer = scheduleWatchdog(resolve);
+    clearTimeout(timer);
+    resolve();
+  });
+});
+
 test("test result validation requires exact authoritative identities", () => {
   const expected = [{ id: "a", label: "A" }, { id: "b", label: "B" }];
   const valid = [{ id: "a", label: "A", passed: true }, { id: "b", label: "B", passed: true }];
@@ -49,6 +65,12 @@ test("test result validation requires exact authoritative identities", () => {
   assert.equal(validateTestResults(expected, [...valid, { id: "x", label: "X", passed: true }]), false);
   assert.equal(validateTestResults(expected, [valid[0]]), false);
   assert.equal(validateTestResults(expected, [{ ...valid[0], label: "falsa" }, valid[1]]), false);
+  assert.equal(validateTestResults(expected, [{ ...valid[0], passed: false }, valid[1]]), false);
+  assert.equal(validateTestResults(expected, [{ ...valid[0], actual: 1 as never }, valid[1]]), false);
+  assert.equal(validateTestResults(expected, [{ ...valid[0], actual: "observado" }, valid[1]]), true);
+  assert.equal(validateTestResults(expected, [{ ...valid[0], id: 1 as never }, valid[1]]), false);
+  assert.equal(validateTestResults(expected, [{ ...valid[0], label: 1 as never }, valid[1]]), false);
+  assert.equal(validateTestResults(expected, [{ ...valid[0], passed: "yes" as never }, valid[1]]), false);
 });
 
 test("student return values and legacy binding names cannot replace trusted recorder results", () => {
@@ -95,7 +117,7 @@ test("inline script serialization neutralizes HTML termination, quotes and Unico
 
 test("React sandbox cleanup cancels active work and releases browser resources", () => {
   const component = readFileSync(new URL("../components/playground/JavaScriptPlayground.tsx", import.meta.url), "utf8");
-  for (const fragment of ["watchdogRef.current", "mountedRef.current = false", "window.clearTimeout(watchdogRef.current)", "pendingRef.current = null", "candidatePort?.close()", "portRef.current?.close()", 'window.removeEventListener("message", receive)', "SANDBOX_DOCUMENT_OPTIONS"]) assert.match(component, new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  for (const fragment of ["watchdogRef.current", "mountedRef.current = false", "window.clearTimeout(watchdogRef.current)", "pendingRef.current = null", "candidatePort?.close()", "portRef.current?.close()", 'window.removeEventListener("message", receive)', "SANDBOX_DOCUMENT_OPTIONS", "setSandboxReady(false)", "setSandboxReady(true)", "ready={sandboxReady}"]) assert.match(component, new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.match(component, /if \(settled \|\| !mountedRef\.current\) return/);
   assert.doesNotMatch(component, /createSandboxDocument\(nonce, \{/);
 });
