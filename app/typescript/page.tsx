@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { ComingSoonHub } from "@/components/languages/ComingSoonHub";
+import { CurriculumOverview } from "@/components/learning/CurriculumPages";
+import { curricula } from "@/data/curricula";
 
-export const metadata: Metadata = { title: "TypeScript - Próximamente" };
+export const metadata: Metadata = { title: "Aprende TypeScript" };
 
 export default function TypeScriptPage() {
-  return <ComingSoonHub languageId="typescript" />;
+  return <CurriculumOverview curriculum={curricula.typescript} />;
 }

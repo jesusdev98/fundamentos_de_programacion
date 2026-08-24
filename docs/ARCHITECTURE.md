@@ -4,18 +4,17 @@ The application separates a typed language catalog from a central registry of pu
 
 ## Request and Rendering Model
 
-`app/layout.tsx` provides the global shell. The home page derives its three language cards from `data/languages.ts`. `data/curricula.ts` registers JavaScript and Python with their levels, sources, and runner. Both languages use `facil`, `medio`, and `dificil`; `dynamicParams = false` limits routes to those published slugs. TypeScript remains an informational hub.
+`app/layout.tsx` provides the global shell. The home page derives its three language cards from `data/languages.ts`. `data/curricula.ts` registers JavaScript, TypeScript, and Python with their levels, sources, and runner. Every language uses `facil`, `medio`, and `dificil`; `dynamicParams = false` limits routes to those published slugs.
 
 | Area | Responsibility |
 | --- | --- |
 | `app/` | Layout, metadata, canonical routes, and legacy redirect pages. |
 | `components/layout/` | Shared header and footer. |
-| `components/languages/` | Shared informational hub for TypeScript while its curriculum is pending. |
 | `components/learning/` | Level cards, lesson cards, exercises, code examples, and page introductions. |
 | `components/playground/` | Editor, execution coordinator, console output, validation feedback, and run readiness. |
 | `components/quiz/` | Attempt lifecycle, progress, question selection UI, scoring, and review. |
 | `components/sources/` | Lesson-level official reference links. |
-| `data/javascript/`, `data/python/` | Easy, Medium, and Difficult lesson, exercise, and question banks. |
+| `data/javascript/`, `data/typescript/`, `data/python/` | Easy, Medium, and Difficult lesson, exercise, and question banks. |
 | `data/curricula.ts` | Published curriculum registry with language, levels, sources, and runner. |
 | `data/languages.ts` | Typed catalog with status, accent, sources, and totals derived from registered curricula. |
 | `data/sources.ts` | Central official-source catalog associated with typed language IDs and resolved by stable IDs. |
@@ -23,11 +22,11 @@ The application separates a typed language catalog from a central registry of pu
 
 ## Routes
 
-The application has 29 canonical routes: Home, Sources, three language hubs, and four routes per level for JavaScript and Python: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents. TypeScript has no curriculum routes yet.
+The application has 41 canonical learning routes: Home, Sources, three language hubs, and four routes per level for all three languages: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents. `/typescript-compiler-5.9.3.js` is a versioned runtime asset endpoint, not a navigable learning route.
 
 ## Content Model
 
-Each published language has 24/12/50 items at Easy, 22/12/50 at Medium, and 24/14/50 at Difficult: 70 lessons, 38 exercises, and 150 questions per language. The partial JavaScript/Python total is 140/76/300. Lessons carry explanations, examples, key points, optional exercise links, and source IDs. Exercises carry stable IDs, starter code, hints, solution, explanation, and executable output or behavioral tests. Questions carry stable question and answer IDs, exactly four options, one correct option, explanation, lesson ID, and source IDs.
+Each language has 24/12/50 items at Easy, 22/12/50 at Medium, and 24/14/50 at Difficult: 70 lessons, 38 exercises, and 150 questions per language, or 210/114/450 across nine levels. TypeScript exercises add compiler assertions, optional in-memory files, and an optional runtime contract. Questions carry globally unique prompts and IDs, exactly four distinct options, one correct option, explanations, lesson IDs, and source IDs.
 
 ## Quiz Pipeline
 
@@ -63,6 +62,21 @@ React coordinator
 `JavaScriptPlayground` creates the iframe from `lib/sandbox-document.ts`. The iframe has `allow-scripts` without `allow-same-origin`, applies a restrictive CSP, and transfers a dedicated `MessagePort` only after identity checks. The Run button remains disabled until the iframe acknowledges the current `nonce` and `connectionId`. Each run gets a unique `runId`; each worker is terminated after completion or timeout. A parent watchdog recreates the iframe if the child stops responding.
 
 The generated document owns the test recorder and capability token. Learner return values and legacy binding names cannot replace the authoritative recorder output. See [Security](SECURITY.md) for the threat model and limitations.
+
+## TypeScript Compiler Pipeline
+
+```text
+TypeScript practice Run
+  -> create or reuse one Dedicated compiler Worker
+  -> load same-origin TypeScript 5.9.3 from the pinned package
+  -> createProgram with a strict in-memory CompilerHost and bounded declarations
+  -> collect option, syntactic, global, and semantic diagnostics
+  -> emit only when no error exists
+  -> pass emitted JavaScript to the existing opaque iframe sandbox
+  -> execute and validate inside the disposable JavaScript Worker
+```
+
+The compiler Worker is created only on Run and is reused across exercise cards. A 10-second parent timeout terminates it and rejects all pending requests; the next run creates a fresh Worker. `/typescript-compiler-5.9.3.js` serves the exact installed compiler lazily and cacheably without copying it into `public/` or page bundles. Type-only and module exercises use hidden assertions and a bounded VFS; module emit is not executed because the sandbox intentionally rejects module loading. The runner is not a Language Service or IDE and does not resolve npm or network imports.
 
 ## Python Runner Pipeline
 

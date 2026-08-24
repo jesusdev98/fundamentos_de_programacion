@@ -29,7 +29,7 @@ Never place their values in source files, workflow arguments, logs, or documenta
 
 ## Verification
 
-The deployment job checks the same 29 canonical routes and four permanent redirects used locally, but against the stable domain. It then runs focused Chromium production tests. Python practice additionally depends on the browser reaching the pinned jsDelivr Pyodide 314.0.4 assets; application deployment does not bundle or install Pyodide.
+The deployment job checks the same 41 canonical routes and four permanent redirects used locally, but against the stable domain. It then runs focused Chromium production tests. Python practice depends on the browser reaching pinned jsDelivr Pyodide 314.0.4 assets. TypeScript practice depends on the deployed server retaining the traced `typescript/lib/typescript.js` from the exact 5.9.3 package so `/typescript-compiler-5.9.3.js` can serve it lazily; the Worker itself remains a small authored public asset.
 
 Playwright reports and raw results are retained only when production browser verification fails.
 

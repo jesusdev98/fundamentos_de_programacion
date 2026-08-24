@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-for (const language of ["javascript", "python"] as const) {
+for (const language of ["javascript", "python", "typescript"] as const) {
   for (const level of [{ slug: "facil", lessons: 24 }, { slug: "medio", lessons: 22 }, { slug: "dificil", lessons: 24 }] as const) {
     test(`${language} ${level.slug} theory preserves lesson, example, and reference invariants`, async ({ page }) => {
       await page.goto(`/${language}/${level.slug}/teoria`);

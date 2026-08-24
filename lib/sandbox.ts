@@ -1,4 +1,4 @@
-import type { ExerciseValidation } from "@/types/learning";
+import type { ExerciseValidation, RuntimeValidation } from "@/types/learning";
 import type { ConsoleMessage, SandboxRunResult, SandboxTestResult } from "@/types/sandbox";
 
 export const SANDBOX_VERSION = 1 as const;
@@ -37,13 +37,19 @@ export function normalizeOutput(messages: readonly ConsoleMessage[]): readonly s
     .map((message) => message.text.trim().replace(/\s+/g, " "));
 }
 
+export function runtimeValidation(validation: ExerciseValidation): RuntimeValidation | undefined {
+  return validation.kind === "typescript" ? validation.runtime : validation;
+}
+
 export function validateExerciseResult(validation: ExerciseValidation, result: SandboxRunResult): boolean {
   if (result.timedOut || result.messages.some((message) => message.kind === "error")) return false;
-  if (validation.kind === "output") {
+  const runtime = runtimeValidation(validation);
+  if (!runtime) return true;
+  if (runtime.kind === "output") {
     const actual = normalizeOutput(result.messages);
-    return actual.length === validation.expected.length && actual.every((line, index) => line === validation.expected[index].trim().replace(/\s+/g, " "));
+    return actual.length === runtime.expected.length && actual.every((line, index) => line === runtime.expected[index].trim().replace(/\s+/g, " "));
   }
-  return validateTestResults(validation.tests, result.tests);
+  return validateTestResults(runtime.tests, result.tests);
 }
 
 export function validateTestResults(expected: readonly { readonly id: string; readonly label: string }[], actual: readonly SandboxTestResult[]): boolean {

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { createSandboxDocument, serializeForInlineScript } from "../lib/sandbox-document.ts";
-import { isSandboxConnected, isSandboxReady, isSandboxResult, normalizeOutput, PARENT_WATCHDOG_MS, SANDBOX_DOCUMENT_OPTIONS, scheduleWatchdog, validateExerciseResult, validateTestResults, WORKER_TIMEOUT_MS } from "../lib/sandbox.ts";
+import { isSandboxConnected, isSandboxReady, isSandboxResult, normalizeOutput, PARENT_WATCHDOG_MS, runtimeValidation, SANDBOX_DOCUMENT_OPTIONS, scheduleWatchdog, validateExerciseResult, validateTestResults, WORKER_TIMEOUT_MS } from "../lib/sandbox.ts";
 import type { SandboxRunResult } from "../types/sandbox.ts";
 
 const result: SandboxRunResult = { version: 1, type: "result", nonce: "n", runId: "r", messages: [{ kind: "log", text: "  Hola   mundo " }], tests: [{ id: "t", label: "test", passed: true }], timedOut: false };
@@ -30,6 +30,10 @@ test("sandbox handshake validates version, nonce and connection identity", () =>
 test("exercise validation handles output, tests, errors and timeout", () => {
   assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola mundo"] }, result), true);
   assert.equal(validateExerciseResult({ kind: "tests", tests: [{ id: "t", label: "test", expression: "true", assertion: "truthy" }] }, result), true);
+  assert.equal(runtimeValidation({ kind: "typescript", assertions: "type A = true" }), undefined);
+  assert.deepEqual(runtimeValidation({ kind: "typescript", runtime: { kind: "output", expected: ["Hola mundo"] } }), { kind: "output", expected: ["Hola mundo"] });
+  assert.equal(validateExerciseResult({ kind: "typescript", assertions: "type A = true" }, { ...result, messages: [], tests: [] }), true);
+  assert.equal(validateExerciseResult({ kind: "typescript", runtime: { kind: "output", expected: ["Hola mundo"] } }, result), true);
   assert.equal(validateExerciseResult({ kind: "output", expected: ["otro"] }, result), false);
   assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola    mundo"] }, result), true);
   assert.equal(validateExerciseResult({ kind: "output", expected: ["Hola mundo", "extra"] }, result), false);
@@ -116,8 +120,8 @@ test("inline script serialization neutralizes HTML termination, quotes and Unico
 });
 
 test("React sandbox cleanup cancels active work and releases browser resources", () => {
-  const component = readFileSync(new URL("../components/playground/JavaScriptPlayground.tsx", import.meta.url), "utf8");
-  for (const fragment of ["watchdogRef.current", "mountedRef.current = false", "window.clearTimeout(watchdogRef.current)", "pendingRef.current = null", "candidatePort?.close()", "portRef.current?.close()", 'window.removeEventListener("message", receive)', "SANDBOX_DOCUMENT_OPTIONS", "setSandboxReady(false)", "setSandboxReady(true)", "ready={sandboxReady}"]) assert.match(component, new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  const component = readFileSync(new URL("../components/playground/SandboxPlayground.tsx", import.meta.url), "utf8");
+  for (const fragment of ["watchdogRef.current", "mountedRef.current = false", "window.clearTimeout(watchdogRef.current)", "pendingRef.current = null", "candidatePort?.close()", "portRef.current?.close()", 'window.removeEventListener("message", receive)', "SANDBOX_DOCUMENT_OPTIONS", "setSandboxReady(false)", "setSandboxReady(true)", "ready={sandboxReady && !busy}"]) assert.match(component, new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.match(component, /if \(settled \|\| !mountedRef\.current\) return/);
   assert.doesNotMatch(component, /createSandboxDocument\(nonce, \{/);
 });

@@ -37,7 +37,16 @@ export type TestValidation = {
   readonly tests: readonly ExerciseTest[];
 };
 
-export type ExerciseValidation = OutputValidation | TestValidation;
+export type RuntimeValidation = OutputValidation | TestValidation;
+
+export type TypeScriptValidation = {
+  readonly kind: "typescript";
+  readonly assertions?: string;
+  readonly files?: readonly { readonly name: string; readonly content: string }[];
+  readonly runtime?: RuntimeValidation;
+};
+
+export type ExerciseValidation = RuntimeValidation | TypeScriptValidation;
 
 export type Exercise = {
   readonly id: string;

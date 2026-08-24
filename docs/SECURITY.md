@@ -38,6 +38,12 @@ After bootstrap, the Worker shadows expected communication APIs including `fetch
 
 These controls are capability reduction, not a perfect sandbox. Pyodide intentionally bridges Python and JavaScript, browser APIs evolve, and code can consume CPU or allocate memory until termination. The initial Worker must access the pinned CDN to bootstrap. Do not place application secrets in browser code or assume API shadowing proves that every communication path is impossible.
 
+## TypeScript Compiler Controls
+
+TypeScript practice creates one shared Dedicated Worker only after Run. The Worker loads the exact installed TypeScript 5.9.3 compiler from the same-origin versioned endpoint, then type-checks learner source and bounded VFS files with a custom in-memory host. It does not execute learner code, resolve npm packages, access arbitrary server files, or fetch network imports. A 10-second parent timer terminates and replaces the Worker if compilation does not answer.
+
+Compiler success is not an execution capability. Only error-free JavaScript emit is forwarded to the existing opaque-origin iframe and disposable JavaScript Worker, where the same CSP, API blocking, timeout, message limits, and authored-test recorder apply. Type-only module exercises stop after compilation because executable imports remain forbidden. Diagnostics and compiler assertions are educational client-side signals, not trusted authorization.
+
 ## Limitations
 
 - Browser APIs and engines evolve. An unknown API or browser vulnerability may bypass assumptions.
@@ -49,6 +55,8 @@ These controls are capability reduction, not a perfect sandbox. Pyodide intentio
 - Network denial is defense in depth, not a promise that every present or future browser communication primitive is covered.
 - Pyodide runs WebAssembly in a Worker, but the browser provides no strict per-Worker CPU or memory quota. `terminate()` is the hard recovery mechanism after the parent timer fires.
 - Python's virtual filesystem is session-local and does not expose the user's disk directly; it is not durable storage or a security vault.
+- The TypeScript VFS contains only authored declarations, exercise files, learner source, and hidden type assertions. It is intentionally not the complete standard library, package ecosystem, module resolver, or Language Service.
+- The compiler endpoint serves a large cacheable asset on first TypeScript Run. It is absent from landing/theory/quiz requests, but downloading and parsing it has a real one-time memory and bandwidth cost.
 
 The platform is educational, not anti-cheat. Completion state and quiz scores are learning feedback only and must not be treated as certification, fraud prevention, identity, or access control.
 

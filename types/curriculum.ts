@@ -4,7 +4,7 @@ import type { Question } from "./quiz";
 
 export const levelSlugs = ["facil", "medio", "dificil"] as const;
 export type LevelSlug = (typeof levelSlugs)[number];
-export type RunnerId = "javascript" | "python";
+export type RunnerId = "javascript" | "python" | "typescript";
 
 export type CurriculumLevel = {
   readonly slug: LevelSlug;
@@ -17,7 +17,7 @@ export type CurriculumLevel = {
 };
 
 export type Curriculum = {
-  readonly languageId: Extract<LanguageId, "javascript" | "python">;
+  readonly languageId: LanguageId;
   readonly languageName: string;
   readonly runner: RunnerId;
   readonly sourceIds: readonly string[];

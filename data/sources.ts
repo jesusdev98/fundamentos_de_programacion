@@ -197,12 +197,20 @@ const typescriptSources = [
   },
   {
     id: "typescript-repo",
-    name: "TypeScript official repository",
+    name: "TypeScript 5.9.3 compiler repository",
     organization: "Microsoft",
-    url: "https://github.com/microsoft/TypeScript",
+    url: "https://github.com/microsoft/TypeScript/tree/v5.9.3",
     type: "repository",
     licensingNote: "El repositorio del compilador publica una licencia Apache License 2.0. Esa licencia no se traslada automáticamente al Handbook ni al sitio web.",
   },
+  { id: "typescript-tsconfig", name: "TSConfig Reference", organization: "Microsoft / TypeScript Contributors", url: "https://www.typescriptlang.org/tsconfig/", type: "documentation" },
+  { id: "typescript-modules", name: "Modules Reference", organization: "Microsoft / TypeScript Contributors", url: "https://www.typescriptlang.org/docs/handbook/modules/reference.html", type: "documentation" },
+  { id: "typescript-declaration-files", name: "Declaration Files", organization: "Microsoft / TypeScript Contributors", url: "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html", type: "guide" },
+  { id: "typescript-project-references", name: "Project References", organization: "Microsoft / TypeScript Contributors", url: "https://www.typescriptlang.org/docs/handbook/project-references.html", type: "guide" },
+  { id: "typescript-js", name: "Type Checking JavaScript Files", organization: "Microsoft / TypeScript Contributors", url: "https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html", type: "guide" },
+  { id: "typescript-decorators", name: "TypeScript 5.0 Decorators", organization: "Microsoft / TypeScript Contributors", url: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators", type: "documentation", note: "Describe el modelo moderno soportado sin experimentalDecorators; la propuesta TC39 aún no es un estándar final." },
+  { id: "typescript-performance", name: "TypeScript Performance", organization: "Microsoft / TypeScript Contributors", url: "https://github.com/microsoft/TypeScript/wiki/Performance", type: "guide" },
+  { id: "typescript-website-repo", name: "TypeScript-Website repository", organization: "Microsoft / TypeScript Contributors", url: "https://github.com/microsoft/TypeScript-Website", type: "repository", licensingNote: "La documentación y otros contenidos del repositorio usan CC BY 4.0; sus muestras de código usan MIT. Este proyecto no copia ese contenido." },
 ] as const satisfies readonly Omit<SourceReference, "languageId">[];
 
 const pythonSources = [

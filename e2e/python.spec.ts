@@ -97,9 +97,11 @@ test("all authored Python solutions pass their runtime validation", async ({ pag
     expect(outcome.messages.filter((message) => message.kind === "error"), outcome.id).toEqual([]);
     if (outcome.validation.kind === "output") {
       expect(outcome.messages.filter((message) => message.kind === "log").map((message) => message.text.trim()), outcome.id).toEqual(outcome.validation.expected);
-    } else {
+    } else if (outcome.validation.kind === "tests") {
       expect(outcome.tests, outcome.id).toHaveLength(outcome.validation.tests.length);
       expect(outcome.tests.every((result) => result.passed), outcome.id).toBe(true);
+    } else {
+      throw new Error(`${outcome.id} has an unexpected TypeScript validation`);
     }
   }
 });

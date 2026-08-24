@@ -22,4 +22,18 @@ test("mobile smoke covers Home, navigation, one practice, and quiz", async ({ pa
   await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de Python" })).toBeVisible();
   await page.getByRole("link", { name: "Explorar nivel" }).first().click();
   await expect(page).toHaveURL(/\/python\/facil$/);
+  await page.goto("/typescript");
+  await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de TypeScript" })).toBeVisible();
+  await page.getByRole("link", { name: "Explorar nivel" }).first().click();
+  await expect(page).toHaveURL(/\/typescript\/facil$/);
+});
+
+test("theory pages fit the mobile viewport", async ({ page }) => {
+  for (const language of ["javascript", "python", "typescript"] as const) {
+    const route = `/${language}/facil/teoria`;
+    await page.goto(route);
+    await expect(page.getByRole("navigation", { name: "Contenido de teoría" })).toBeVisible();
+    await expect(page.locator("main article").first()).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), route).toBe(true);
+  }
 });

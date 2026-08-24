@@ -19,8 +19,8 @@ Use a short-lived branch from current `main`. Keep each change scoped; do not mi
 - Give every lesson, exercise, question, answer, and source a unique stable ID.
 - Do not rename published IDs merely for style; links, quiz review, and tests depend on them.
 - Questions must have exactly four options and exactly one correct answer.
-- Exercises need a focused prompt, starter code, useful hints, a solution, an explanation, and output or authored-test validation.
-- Link concepts to verified MDN, TC39/ECMAScript, or Node.js sources when applicable.
+- Exercises need a focused prompt, starter code, useful hints, a solution, an explanation, and output, authored-test, or TypeScript compiler validation.
+- Link concepts to verified official JavaScript, TypeScript, or Python sources as applicable.
 - Add source metadata once in `data/sources.ts`; do not invent attribution or license claims.
 
 See [Content and Sources](docs/CONTENT_AND_SOURCES.md) before authoring educational material.
@@ -44,7 +44,7 @@ corepack pnpm@11.1.2 test:e2e
 corepack pnpm@11.1.2 verify:http
 ```
 
-`verify:http` requires a successful production build. Coverage thresholds apply only to `lib/quiz.ts` and `lib/sandbox.ts`; do not describe them as whole-project coverage. Add or update Playwright flows when user-visible behavior changes.
+`verify:http` requires a successful production build. Coverage thresholds apply only to `lib/quiz.ts`, `lib/sandbox.ts`, `lib/python-runner.ts`, and `lib/typescript-runner.ts`; do not describe them as whole-project coverage. Add or update Playwright flows when user-visible behavior changes.
 
 ## Review Notes
 

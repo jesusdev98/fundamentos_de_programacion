@@ -5,9 +5,10 @@ import type { Exercise } from "@/types/learning";
 import type { RunnerId } from "@/types/curriculum";
 import { JavaScriptPlayground } from "@/components/playground/JavaScriptPlayground";
 import { PythonPlayground } from "@/components/playground/PythonPlayground";
+import { TypeScriptPlayground } from "@/components/playground/TypeScriptPlayground";
 import { CodeBlock } from "./CodeBlock";
 
-const playgrounds = { javascript: JavaScriptPlayground, python: PythonPlayground } as const;
+const playgrounds = { javascript: JavaScriptPlayground, python: PythonPlayground, typescript: TypeScriptPlayground } as const;
 
 export function ExerciseCard({ exercise, runner }: { readonly exercise: Exercise; readonly runner: RunnerId }) {
   const [hintCount, setHintCount] = useState(0);
