@@ -29,7 +29,7 @@ Never place their values in source files, workflow arguments, logs, or documenta
 
 ## Verification
 
-The deployment job checks the same 17 canonical routes and four permanent redirects used locally, but against the stable domain. It then runs two focused Chromium production tests covering the language landing and hubs, all three JavaScript learning-level routes, playground execution, and ten-question quiz invariants.
+The deployment job checks the same 29 canonical routes and four permanent redirects used locally, but against the stable domain. It then runs focused Chromium production tests. Python practice additionally depends on the browser reaching the pinned jsDelivr Pyodide 314.0.4 assets; application deployment does not bundle or install Pyodide.
 
 Playwright reports and raw results are retained only when production browser verification fails.
 

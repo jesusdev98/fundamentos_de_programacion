@@ -2,14 +2,19 @@
 
 import { useId, useState } from "react";
 import type { Exercise } from "@/types/learning";
+import type { RunnerId } from "@/types/curriculum";
 import { JavaScriptPlayground } from "@/components/playground/JavaScriptPlayground";
+import { PythonPlayground } from "@/components/playground/PythonPlayground";
 import { CodeBlock } from "./CodeBlock";
 
-export function ExerciseCard({ exercise }: { readonly exercise: Exercise }) {
+const playgrounds = { javascript: JavaScriptPlayground, python: PythonPlayground } as const;
+
+export function ExerciseCard({ exercise, runner }: { readonly exercise: Exercise; readonly runner: RunnerId }) {
   const [hintCount, setHintCount] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
   const [completed, setCompleted] = useState(false);
   const detailsId = useId();
+  const Playground = playgrounds[runner];
   return (
     <article id={exercise.id} className="scroll-mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -17,7 +22,7 @@ export function ExerciseCard({ exercise }: { readonly exercise: Exercise }) {
         <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold text-emerald-800">{exercise.difficulty}</span>
       </div>
       <p className="mt-5 leading-7 text-slate-700">{exercise.prompt}</p>
-      <JavaScriptPlayground exercise={exercise} onCorrect={() => setCompleted(true)} />
+      <Playground exercise={exercise} onCorrect={() => setCompleted(true)} />
       <div className="mt-5 flex flex-wrap gap-3">
         {hintCount < exercise.hints.length ? <button type="button" className="secondary-button" onClick={() => setHintCount((count) => count + 1)}>Mostrar pista</button> : null}
         <button type="button" className="secondary-button" aria-expanded={showSolution} aria-controls={detailsId} onClick={() => setShowSolution((visible) => !visible)}>Ver solución</button>

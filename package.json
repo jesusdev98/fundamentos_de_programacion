@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "node --experimental-strip-types --no-warnings --test tests/*.test.ts",
-    "test:coverage": "node --experimental-strip-types --no-warnings --experimental-test-coverage --test-coverage-include=lib/quiz.ts --test-coverage-include=lib/sandbox.ts --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test tests/quiz.test.ts tests/sandbox.test.ts",
+    "test:coverage": "node --experimental-strip-types --no-warnings --experimental-test-coverage --test-coverage-include=lib/quiz.ts --test-coverage-include=lib/sandbox.ts --test-coverage-include=lib/python-runner.ts --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test tests/quiz.test.ts tests/sandbox.test.ts tests/python-runner.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",

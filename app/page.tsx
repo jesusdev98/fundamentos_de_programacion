@@ -19,7 +19,7 @@ export default function Home() {
       <section className="page-container scroll-mt-8 py-16 lg:py-20" id="lenguajes">
         <p className="eyebrow">Catálogo</p>
         <h2 className="section-title mt-3">Elige un lenguaje</h2>
-        <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Una entrada clara para cada ruta. JavaScript ya está disponible; TypeScript y Python muestran el alcance previsto sin simular contenido.</p>
+        <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Una entrada clara para cada ruta. JavaScript y Python ya están disponibles; TypeScript muestra el alcance previsto sin simular contenido.</p>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {languages.map((language) => (
             <article className="language-card flex min-h-80 flex-col border border-slate-200 bg-white p-7" key={language.id} style={{ "--language-accent": language.accent } as React.CSSProperties}>

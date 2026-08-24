@@ -6,20 +6,19 @@ import type { Question, QuizAnswers, QuizResult } from "@/types/quiz";
 import { QuizProgress } from "./QuizProgress";
 import { QuizQuestionCard } from "./QuizQuestionCard";
 import { QuizResults } from "./QuizResults";
-import type { LevelSlug } from "@/data/javascript/levels";
 
-export function Quiz({ bank, level }: { readonly bank: readonly Question[]; readonly level: LevelSlug }) {
+export function Quiz({ bank, languageName, theoryBasePath }: { readonly bank: readonly Question[]; readonly languageName: string; readonly theoryBasePath: string }) {
   const [questions, setQuestions] = useState<readonly Question[] | null>(null);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [result, setResult] = useState<QuizResult | null>(null);
   function start() { setQuestions(createQuizAttempt(bank)); setAnswers({}); setCurrent(0); setResult(null); }
   if (!questions) return <section className="rounded-xl border border-slate-200 bg-white p-7 text-center"><p className="font-black text-slate-950">Banco: 50 / Intento actual: 10</p><p className="mt-3 text-slate-600">Cada intento selecciona diez preguntas únicas y baraja sus respuestas.</p><button className="primary-button mt-6" type="button" onClick={start}>Comenzar intento</button></section>;
-  if (result) return <QuizResults questions={questions} answers={answers} result={result} level={level} onRestart={start} />;
+  if (result) return <QuizResults questions={questions} answers={answers} result={result} theoryBasePath={theoryBasePath} onRestart={start} />;
   const answered = Object.keys(answers).length;
   const allAnswered = answered === questions.length;
   return (
-    <section aria-label={`Cuestionario de JavaScript ${level}`}>
+    <section aria-label={`Cuestionario de ${languageName}`}>
       <p className="mb-4 text-sm font-black text-slate-700">Banco: {bank.length} / Intento actual: {questions.length}</p>
       <QuizProgress current={current + 1} total={questions.length} answered={answered} />
       <div className="mt-5"><QuizQuestionCard question={questions[current]} questionNumber={current + 1} selectedAnswerId={answers[questions[current].id]} onSelect={(answerId) => setAnswers((value) => ({ ...value, [questions[current].id]: answerId }))} /></div>

@@ -18,4 +18,8 @@ test("mobile smoke covers Home, navigation, one practice, and quiz", async ({ pa
   await page.goto("/javascript/dificil");
   await expect(page).toHaveURL(/\/javascript\/dificil$/);
   await expect(page.getByRole("heading", { level: 1, name: "JavaScript Difícil" })).toBeVisible();
+  await page.goto("/python");
+  await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de Python" })).toBeVisible();
+  await page.getByRole("link", { name: "Explorar nivel" }).first().click();
+  await expect(page).toHaveURL(/\/python\/facil$/);
 });

@@ -1,7 +1,15 @@
 import { spawn } from "node:child_process";
 
 const port = 3100;
-const canonicalRoutes = ["/", "/javascript", "/typescript", "/python", "/javascript/facil", "/javascript/facil/teoria", "/javascript/facil/practica", "/javascript/facil/cuestionario", "/javascript/medio", "/javascript/medio/teoria", "/javascript/medio/practica", "/javascript/medio/cuestionario", "/javascript/dificil", "/javascript/dificil/teoria", "/javascript/dificil/practica", "/javascript/dificil/cuestionario", "/fuentes"];
+const curriculumLanguages = ["javascript", "python"];
+const levelSlugs = ["facil", "medio", "dificil"];
+const levelSections = ["", "/teoria", "/practica", "/cuestionario"];
+const curriculumRoutes = curriculumLanguages.flatMap((language) => [
+  `/${language}`,
+  ...levelSlugs.flatMap((level) => levelSections.map((section) => `/${language}/${level}${section}`)),
+]);
+const canonicalRoutes = ["/", ...curriculumRoutes, "/typescript", "/fuentes"];
+if (canonicalRoutes.length !== 29) throw new Error(`Expected 29 canonical routes, found ${canonicalRoutes.length}.`);
 const redirects = new Map([["/javascript/basico", "/javascript/facil"], ["/javascript/basico/teoria", "/javascript/facil/teoria"], ["/javascript/basico/practica", "/javascript/facil/practica"], ["/javascript/basico/cuestionario", "/javascript/facil/cuestionario"]]);
 const externalBaseURL = process.env.SMOKE_BASE_URL;
 let baseURL = `http://127.0.0.1:${port}`;

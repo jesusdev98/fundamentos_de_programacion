@@ -10,31 +10,35 @@ A public, multi-language catalog for learning programming fundamentals through o
 
 ## About
 
-The catalog covers JavaScript, TypeScript, and Python. JavaScript is the currently available curriculum; TypeScript and Python have small informational hubs and official references, but no published lessons or assessments yet.
+The catalog covers JavaScript, TypeScript, and Python. JavaScript and Python have complete published curricula; TypeScript remains an informational hub with official references and no lessons or assessments yet.
 
 | Language | Status | Published learning content |
 | --- | --- | --- |
 | JavaScript | Available | 3 levels, 70 lessons, 38 exercises, 150 questions |
 | TypeScript | Coming soon | None |
-| Python | Coming soon | None |
+| Python | Available | 3 levels, 70 lessons, 38 exercises, 150 questions |
 
 ## Features
 
 - Original lessons, examples, exercises, questions, and explanations.
-- Isolated browser playground for synchronous and asynchronous core JavaScript.
+- Isolated browser playgrounds for core JavaScript and Python 3.14.
+- Lazy Pyodide 314.0.4 module Worker with hard timeout and recovery.
 - Output-based and authored-test exercise validation.
 - Hints, solutions, scoring, explanations, and incorrect-answer review.
 - Stable content IDs and official reference links.
 - Responsive App Router interface with Node and Chromium quality gates.
 
-## Current JavaScript Content
+## Current Curricula
 
 | Level | Lessons | Exercises | Question bank | Per quiz |
 | --- | ---: | ---: | ---: | ---: |
 | JavaScript Easy | 24 | 12 | 50 | 10 |
 | JavaScript Medium | 22 | 12 | 50 | 10 |
 | JavaScript Difficult | 24 | 14 | 50 | 10 |
-| **Total** | **70** | **38** | **150** | **10 per level** |
+| Python Easy | 24 | 12 | 50 | 10 |
+| Python Medium | 22 | 12 | 50 | 10 |
+| Python Difficult | 24 | 14 | 50 | 10 |
+| **Total** | **140** | **76** | **300** | **10 per level** |
 
 ## Tech Stack
 
@@ -42,6 +46,7 @@ The catalog covers JavaScript, TypeScript, and Python. JavaScript is the current
 - TypeScript and Tailwind CSS 4.
 - Node.js 22, pnpm 11.1.2, and `node:test`.
 - Playwright 1.61.0 with Chromium.
+- Pyodide 314.0.4 with embedded CPython 3.14.2, loaded from a pinned CDN URL only for Python practice.
 
 ## Quick Start
 
@@ -62,7 +67,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `pnpm build` / `pnpm start` | Build and serve the production application. |
 | `pnpm lint` | Run ESLint. |
 | `pnpm test` | Run the Node test suite. |
-| `pnpm test:coverage` | Enforce 100% coverage for `lib/quiz.ts` and `lib/sandbox.ts` only. |
+| `pnpm test:coverage` | Enforce 100% coverage for quiz, sandbox, and pure Python-runner protocol logic. |
 | `pnpm test:e2e` | Run Playwright on desktop and focused mobile Chromium projects against an existing `pnpm build`. |
 | `pnpm test:e2e:ui` | Open Playwright UI mode. |
 | `pnpm test:e2e:headed` | Run Playwright with a visible browser. |
@@ -81,7 +86,7 @@ Status: `main` push → quality → Vercel Production.
 app/                 Next.js routes and shared layout
 components/          Learning, playground, quiz, source, and layout UI
 data/                Curriculum banks and official reference catalog
-lib/                 Quiz logic and sandbox protocol/document generator
+lib/                 Quiz logic and JavaScript/Python runner protocols
 e2e/                 Playwright desktop and focused mobile flows
 tests/               Node tests and structural sandbox checks
 scripts/             Production HTTP smoke test
@@ -99,7 +104,7 @@ docs/                Public technical and content documentation
 
 ## Official References
 
-JavaScript concepts are checked against MDN, ECMAScript/TC39, and focused Node.js references. TypeScript and Python hubs link to their official documentation without claiming unpublished curriculum. The global catalog is available at `/fuentes`; source and licensing boundaries are documented in [Content and Sources](docs/CONTENT_AND_SOURCES.md).
+JavaScript concepts are checked against MDN, ECMAScript/TC39, and focused Node.js references. Python concepts are checked against the Python 3.14 tutorial, language reference, standard library, and focused official pages; Pyodide behavior is checked against its official documentation. TypeScript remains unpublished curriculum. The global catalog is available at `/fuentes`; source and licensing boundaries are documented in [Content and Sources](docs/CONTENT_AND_SOURCES.md).
 
 ## Contributing
 

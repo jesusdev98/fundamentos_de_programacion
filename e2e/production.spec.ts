@@ -7,20 +7,22 @@ test("production learning routes and playground are operational", async ({ page 
   await page.getByRole("article").filter({ hasText: "JavaScript" }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
   await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de JavaScript" })).toBeVisible();
-  for (const language of ["typescript", "python"] as const) {
-    await page.goto(`/${language}`);
-    await expect(page.getByText("Próximamente", { exact: true }).first()).toBeVisible();
-  }
+  await page.goto("/typescript");
+  await expect(page.getByText("Próximamente", { exact: true }).first()).toBeVisible();
+  await page.goto("/python");
+  await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de Python" })).toBeVisible();
 
-  for (const level of ["facil", "medio", "dificil"] as const) {
-    await page.goto(`/javascript/${level}`);
-    await expect(page.getByRole("link", { name: "Estudiar teoría" })).toBeVisible();
-    await page.goto(`/javascript/${level}/teoria`);
-    await expect(page.getByRole("heading", { level: 1, name: "Comprende antes de memorizar" })).toBeVisible();
-    await page.goto(`/javascript/${level}/practica`);
-    await expect(page.getByRole("heading", { level: 1, name: "Convierte ideas en código" })).toBeVisible();
-    await page.goto(`/javascript/${level}/cuestionario`);
-    await expect(page.getByRole("button", { name: "Comenzar intento" })).toBeVisible();
+  for (const language of ["javascript", "python"] as const) {
+    for (const level of ["facil", "medio", "dificil"] as const) {
+      await page.goto(`/${language}/${level}`);
+      await expect(page.getByRole("link", { name: "Estudiar teoría" })).toBeVisible();
+      await page.goto(`/${language}/${level}/teoria`);
+      await expect(page.getByRole("heading", { level: 1, name: "Comprende antes de memorizar" })).toBeVisible();
+      await page.goto(`/${language}/${level}/practica`);
+      await expect(page.getByRole("heading", { level: 1, name: "Convierte ideas en código" })).toBeVisible();
+      await page.goto(`/${language}/${level}/cuestionario`);
+      await expect(page.getByRole("button", { name: "Comenzar intento" })).toBeVisible();
+    }
   }
 
   await page.goto("/javascript/facil/practica");

@@ -28,7 +28,7 @@ export type ExerciseTest = {
   readonly id: string;
   readonly label: string;
   readonly expression: string;
-  readonly assertion: "equal" | "deepEqual" | "truthy";
+  readonly assertion: "equal" | "deepEqual" | "truthy" | "raises";
   readonly expected?: unknown;
 };
 

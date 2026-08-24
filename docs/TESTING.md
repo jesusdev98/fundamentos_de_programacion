@@ -17,20 +17,21 @@ Run `pnpm build && pnpm verify:http` to exercise the production server and perma
 
 ## Node and Core Logic
 
-The tests under `tests/` use Node's built-in test runner with TypeScript type stripping. They cover curriculum invariants, source resolution, quiz behavior, sandbox protocol guards, result validation, and structural properties of the generated sandbox document.
+The tests under `tests/` use Node's built-in test runner with TypeScript type stripping. They cover both curricula, source resolution, quiz behavior, JavaScript sandbox guards, Python Worker protocol guards, result validation, and structural properties of both browser runtimes.
 
 `test:coverage` has an intentionally narrow scope:
 
 - `lib/quiz.ts`
 - `lib/sandbox.ts`
+- `lib/python-runner.ts`
 
-The command explicitly includes only those two files and enforces 100% line, function, and branch coverage. This is **core-logic coverage**, not project-wide coverage.
+The command explicitly includes only those three files and enforces 100% line, function, and branch coverage. This is **core-logic coverage**, not project-wide coverage.
 
-`lib/sandbox-document.ts` is deliberately outside that threshold. Node observes it as a string generator, so line coverage would not represent execution of the generated iframe and worker program. Its required defenses are checked structurally in Node, while actual handshake, execution, console capture, authored tests, timeout, responsiveness, and recovery run in Chromium E2E.
+Generated JavaScript sandbox code and `public/python-worker.mjs` are deliberately outside that threshold. Node structural checks verify required boundaries; Chromium verifies loading, execution, console capture, authored tests, exceptions, timeout, responsiveness, recovery, and Pyodide lazy loading.
 
 ## HTTP Smoke
 
-`scripts/smoke-http.mjs` starts a previously built production application on `127.0.0.1:3100`, verifies all 17 canonical routes return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
+`scripts/smoke-http.mjs` derives the JavaScript/Python route matrix, asserts 29 canonical routes, verifies they return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
 
 When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin without starting a local server. External redirects may use relative or absolute locations, but must remain on the requested origin and resolve to the expected path.
 
@@ -38,7 +39,7 @@ When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin wi
 
 `playwright.config.ts` uses `http://127.0.0.1:3000`, Chromium only, Desktop Chrome for the complete suite, and the official Pixel 7 Chromium device for one focused mobile spec. Local and CI runs serve an existing production build with `next start`, so run `pnpm build` before `pnpm test:e2e`. Retries and a single worker are CI-only. HTML plus console or GitHub reporting is enabled, with first-retry traces and failure-only screenshots and videos.
 
-The current normal matrix contains 24 tests across five specs: 23 Desktop Chrome tests plus one focused Mobile Chrome test. Production mode remains a separate two-test `Production Chrome` matrix.
+The current normal matrix contains 41 tests across six specs: 40 Desktop Chrome tests plus one focused Mobile Chrome test. Production mode remains a separate two-test `Production Chrome` matrix.
 
 Tests use accessible roles, labels, names, and web-first assertions. They do not use fixed sleeps, external navigation, shared test state, or app-only answer exposure. Quiz helpers import the authored banks in test code and map the visible prompt to the correct or deliberately incorrect answer text.
 
@@ -52,7 +53,7 @@ Production verification is intentionally smaller than the local suite. With `PLA
 | --- | --- |
 | `pnpm test` | All Node tests. |
 | `pnpm verify:quiz` | Focused quiz Node tests. |
-| `pnpm test:coverage` | 100% thresholds for the two explicit core files. |
+| `pnpm test:coverage` | 100% thresholds for the three explicit core files. |
 | `pnpm test:e2e` | Headless desktop suite plus focused mobile smoke against an existing production build. |
 | `pnpm test:e2e:ui` | Interactive Playwright UI. |
 | `pnpm test:e2e:headed` | Visible-browser Playwright execution. |
@@ -67,7 +68,7 @@ Production verification is intentionally smaller than the local suite. With `PLA
 
 | Flow | Test | Spec | Desktop | Mobile | Status |
 | --- | --- | --- | :---: | :---: | --- |
-| 17 canonical routes | HTTP status, H1, expected content, no app error | `routes.spec.ts` | Yes | No | Automated |
+| 29 canonical routes | HTTP status, H1, expected content, no app error | `routes.spec.ts` | Yes | No | Automated |
 | 4 legacy redirects | Exact 308 and `/javascript/facil*` target | `routes.spec.ts` | Yes | No | Automated |
 | Global landing and header | Title, language states, anchor, Sources, all language hubs, global-only navigation | `routes.spec.ts` | Yes | Partial | Automated |
 | JavaScript overview → levels | Link navigation and final URLs | `routes.spec.ts` | Yes | Partial | Automated |
@@ -88,4 +89,10 @@ Production verification is intentionally smaller than the local suite. With `PLA
 | Difficult quiz | 10 unique prompts, four options, review, reset, and 10/10 | `quiz.spec.ts` | Yes | No | Automated |
 | Quiz repeat | Answers and score reset, ten-question attempt retained | `quiz.spec.ts` | Yes | No | Automated |
 | Perfect quiz | Real-bank answers, 10/10, 100%, success, no pending review | `quiz.spec.ts` | Yes | No | Automated |
-| Mobile smoke | Home, navigation, one practice run, quiz start, Difficult selector | `mobile.spec.ts` | No | Yes | Automated |
+| Python runner lazy loading | No Pyodide request before Run; pinned request after Run | `python.spec.ts` | Yes | No | Automated |
+| Python output and exception recovery | stdout, arithmetic, NameError, unsupported input, recovery | `python.spec.ts` | Yes | No | Automated |
+| Python timeout and recovery | Infinite loop, hard Worker termination, fresh successful run | `python.spec.ts` | Yes | No | Automated |
+| Python behavioral exercises | One real Easy, Medium, and Difficult solution | `python.spec.ts` | Yes | No | Automated |
+| All Python authored validations | 38 solutions and their output/behavioral contracts in one real Pyodide runtime | `python.spec.ts` | Yes | No | Automated |
+| Python quizzes | Three 50-question banks, attempts of ten, four options, score and review | `quiz.spec.ts` | Yes | No | Automated |
+| Mobile smoke | Home, JavaScript practice/quiz, Difficult selector, and Python access | `mobile.spec.ts` | No | Yes | Automated |

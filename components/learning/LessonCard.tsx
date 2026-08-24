@@ -2,16 +2,15 @@ import type { Lesson } from "@/types/learning";
 import Link from "next/link";
 import { SourceLinks } from "@/components/sources/SourceLinks";
 import { CodeBlock } from "./CodeBlock";
-import type { LevelSlug } from "@/data/javascript/levels";
 
 export function LessonCard({
   lesson,
   number,
-  level,
+  basePath,
 }: {
   readonly lesson: Lesson;
   readonly number: number;
-  readonly level: LevelSlug;
+  readonly basePath: string;
 }) {
   return (
     <article
@@ -49,7 +48,7 @@ export function LessonCard({
           ))}
         </ul>
       </div>
-      {lesson.exerciseId ? <Link className="secondary-button mt-6" href={`/javascript/${level}/practica#${lesson.exerciseId}`}>Practicar este concepto</Link> : null}
+      {lesson.exerciseId ? <Link className="secondary-button mt-6" href={`${basePath}/practica#${lesson.exerciseId}`}>Practicar este concepto</Link> : null}
       <SourceLinks sourceIds={lesson.sourceIds} />
     </article>
   );

@@ -4,7 +4,7 @@ const routes = [
   ["/", "Fundamentos de la Programación", "Explorar lenguajes"],
   ["/javascript", "Elige tu nivel de JavaScript", "JavaScript Fácil"],
   ["/typescript", "TypeScript", "Tipos cotidianos"],
-  ["/python", "Python", "Sintaxis y control de flujo"],
+  ["/python", "Elige tu nivel de Python", "Python Fácil"],
   ["/javascript/facil", "JavaScript Fácil", "Estudiar teoría"],
   ["/javascript/facil/teoria", "Comprende antes de memorizar", "24 lecciones originales"],
   ["/javascript/facil/practica", "Convierte ideas en código", "Actualizar una puntuación"],
@@ -17,10 +17,23 @@ const routes = [
   ["/javascript/dificil/teoria", "Comprende antes de memorizar", "24 lecciones originales"],
   ["/javascript/dificil/practica", "Convierte ideas en código", "Contador mediante closure"],
   ["/javascript/dificil/cuestionario", "Comprueba y repasa", "Banco: 50"],
+  ["/python/facil", "Python Fácil", "Estudiar teoría"],
+  ["/python/facil/teoria", "Comprende antes de memorizar", "24 lecciones originales"],
+  ["/python/facil/practica", "Convierte ideas en código", "Actualizar una puntuación"],
+  ["/python/facil/cuestionario", "Comprueba y repasa", "Banco: 50"],
+  ["/python/medio", "Python Medio", "Abrir práctica"],
+  ["/python/medio/teoria", "Comprende antes de memorizar", "22 lecciones originales"],
+  ["/python/medio/practica", "Convierte ideas en código", "Normalizar etiquetas"],
+  ["/python/medio/cuestionario", "Comprueba y repasa", "Banco: 50"],
+  ["/python/dificil", "Python Difícil", "24 lecciones"],
+  ["/python/dificil/teoria", "Comprende antes de memorizar", "24 lecciones originales"],
+  ["/python/dificil/practica", "Convierte ideas en código", "Iterable con recorridos independientes"],
+  ["/python/dificil/cuestionario", "Comprueba y repasa", "Banco: 50"],
   ["/fuentes", "Fuentes y créditos", "Mozilla Contributors"],
 ] as const;
 
 test("all canonical routes return HTML with their H1 and expected content", async ({ page }) => {
+  expect(routes).toHaveLength(29);
   for (const [route, heading, content] of routes) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
@@ -50,8 +63,8 @@ test("landing presents the catalog and navigates to every language and sources",
   const catalog = page.locator("#lenguajes");
   await expect(page.getByRole("heading", { level: 2, name: "Elige un lenguaje" })).toBeVisible();
   for (const name of ["JavaScript", "TypeScript", "Python"]) await expect(catalog.getByRole("heading", { level: 3, name })).toBeVisible();
-  await expect(catalog.getByRole("article").filter({ hasText: "JavaScript" }).getByText("Disponible", { exact: true })).toBeVisible();
-  for (const name of ["TypeScript", "Python"]) await expect(catalog.getByRole("article").filter({ hasText: name }).getByText("Próximamente", { exact: true })).toBeVisible();
+  for (const name of ["JavaScript", "Python"]) await expect(catalog.getByRole("article").filter({ hasText: name }).getByText("Disponible", { exact: true })).toBeVisible();
+  await expect(catalog.getByRole("article").filter({ hasText: "TypeScript" }).getByText("Próximamente", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Aprender con referencias confiables" })).toBeVisible();
 
   await page.getByRole("link", { name: "Explorar lenguajes" }).click();
@@ -60,7 +73,7 @@ test("landing presents the catalog and navigates to every language and sources",
   await catalog.getByRole("article").filter({ hasText: "JavaScript" }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
   await page.goto("/");
-  await page.locator("#lenguajes").getByRole("article").filter({ hasText: "Python" }).getByRole("link", { name: "Ver avance" }).click();
+  await page.locator("#lenguajes").getByRole("article").filter({ hasText: "Python" }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/python$/);
   await page.goto("/");
   await page.locator("#lenguajes").getByRole("article").filter({ hasText: "TypeScript" }).getByRole("link", { name: "Ver avance" }).click();
@@ -89,6 +102,15 @@ test("JavaScript overview navigates to Easy, Medium, and Difficult", async ({ pa
   await expect(page).toHaveURL(/\/javascript\/dificil$/);
 });
 
+test("Python overview navigates to Easy, Medium, and Difficult", async ({ page }) => {
+  await page.goto("/python");
+  for (const [index, level] of ["facil", "medio", "dificil"].entries()) {
+    await page.getByRole("link", { name: "Explorar nivel" }).nth(index).click();
+    await expect(page).toHaveURL(new RegExp(`/python/${level}$`));
+    await page.goto("/python");
+  }
+});
+
 for (const level of ["facil", "medio", "dificil"] as const) {
   test(`${level} level navigates to theory, practice, and quiz`, async ({ page }) => {
     await page.goto(`/javascript/${level}`);
@@ -96,6 +118,17 @@ for (const level of ["facil", "medio", "dificil"] as const) {
       await page.getByRole("link", { name }).click();
       await expect(page).toHaveURL(new RegExp(`/javascript/${level}/${suffix}$`));
       await page.goto(`/javascript/${level}`);
+    }
+  });
+}
+
+for (const level of ["facil", "medio", "dificil"] as const) {
+  test(`Python ${level} navigates to theory, practice, and quiz`, async ({ page }) => {
+    await page.goto(`/python/${level}`);
+    for (const [name, suffix] of [["Estudiar teoría", "teoria"], ["Abrir práctica", "practica"], ["Comenzar cuestionario", "cuestionario"]] as const) {
+      await page.getByRole("link", { name }).click();
+      await expect(page).toHaveURL(new RegExp(`/python/${level}/${suffix}$`));
+      await page.goto(`/python/${level}`);
     }
   });
 }

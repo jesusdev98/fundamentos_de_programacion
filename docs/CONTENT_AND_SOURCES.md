@@ -10,11 +10,13 @@ Use the primary official sources for each language:
 | --- | --- |
 | JavaScript | MDN JavaScript Guide, MDN JavaScript Reference, ECMAScript/TC39 |
 | TypeScript | TypeScript Handbook, TypeScript Documentation, official compiler repository |
-| Python | Python Tutorial, Python Language Reference, Python Documentation |
+| Python | Python 3.14 Tutorial, Python 3.14 Language Reference, Python 3.14 Standard Library |
 
-Add a source to `data/sources.ts` with a stable ID, typed language association, organization, canonical URL, and accurate type. Language cards point to three primary source IDs; Python's license page is metadata and does not count as a fourth pedagogical source. JavaScript lessons and questions may reference additional focused MDN and Node.js entries. Use `/fuentes` to present metadata rather than duplicating it in components.
+Add a source to `data/sources.ts` with a stable ID, typed language association, organization, canonical URL, and accurate type. Language cards point to three primary source IDs; license pages are metadata rather than extra pedagogical sources. JavaScript and Python lessons may reference focused official entries. Use `/fuentes` to present metadata rather than duplicating it in components.
 
 Advanced JavaScript topics use focused MDN references for closures, `this`, prototypes, descriptors, classes, private elements, symbols, iteration, keyed collections, Promise concurrency, execution, modules, and `Object.freeze`. ECMAScript remains the normative language reference. Node.js event-loop documentation is used only to identify host-specific phases and priorities, not to redefine ECMAScript jobs.
+
+Python topics use the versioned 3.14 tutorial, language reference, standard library, data model, typing, asyncio, import-system, contextlib, iterator/generator, descriptor, MRO, and functools documentation. Editorial claims follow the current stable Python 3.14.7 documentation. Browser practice uses Pyodide 314.0.4, whose embedded interpreter is CPython 3.14.2; the difference is stated rather than hidden.
 
 ## Writing Rules
 
@@ -34,6 +36,7 @@ Record attribution or licensing notes only when the statement has been verified 
 - MDN documentation is CC BY-SA 2.5 or any later version unless a page says otherwise. Code sample terms vary by date, so this project writes its own examples.
 - The official TypeScript compiler repository is Apache License 2.0. This does not establish the license of the Handbook, documentation site, or website design.
 - Python software and documentation use the Python Software Foundation License Version 2. Starting with Python 3.8.6, examples, recipes, and other documentation code are also available under the Zero-Clause BSD license.
+- Pyodide 314.0.4 is Mozilla Public License 2.0. Packages distributed by or loadable in Pyodide retain their own licenses; this runner does not install arbitrary packages.
 
 Names such as MDN, Mozilla, TC39, Ecma International, Node.js, OpenJS Foundation, and their product or project names belong to their respective owners. This independent project is not affiliated with, endorsed by, sponsored by, or approved by those organizations.
 
