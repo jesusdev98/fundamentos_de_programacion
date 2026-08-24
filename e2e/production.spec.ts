@@ -5,7 +5,9 @@ test("production learning routes and playground are operational", async ({ page 
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Fundamentos de la Programación" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Elige un lenguaje" })).toBeVisible();
-  await page.getByRole("article").filter({ hasText: "JavaScript" }).getByRole("link", { name: "Explorar ruta" }).click();
+  await page.getByRole("article").filter({
+    has: page.getByRole("heading", { name: "JavaScript", exact: true }),
+  }).getByRole("link", { name: "Explorar ruta" }).click();
   await expect(page).toHaveURL(/\/javascript$/);
   await expect(page.getByRole("heading", { level: 1, name: "Elige tu nivel de JavaScript" })).toBeVisible();
   await page.goto("/typescript");
@@ -35,15 +37,15 @@ test("production learning routes and playground are operational", async ({ page 
 
   await page.goto("/python/facil/practica");
   const python = page.locator("main article").first();
-  await python.getByRole("textbox", { name: "Editor de Python" }).fill('print("production-python")');
+  await python.getByRole("textbox", { name: "Editor de Python" }).fill('print("production-python-ok")');
   await python.getByRole("button", { name: "Ejecutar" }).click();
-  await expect(python.getByRole("region", { name: "Salida de consola" })).toContainText("production-python", { timeout: 40_000 });
+  await expect(python.getByRole("region", { name: "Salida de consola" })).toContainText("production-python-ok", { timeout: 40_000 });
 
   await page.goto("/typescript/facil/practica");
   const typescript = page.locator("main article").first();
-  await typescript.getByRole("textbox", { name: "Editor de TypeScript" }).fill('const mensaje: string = "production-typescript"; console.log(mensaje);');
+  await typescript.getByRole("textbox", { name: "Editor de TypeScript" }).fill('const ok: string = "production-typescript-ok"; console.log(ok);');
   await typescript.getByRole("button", { name: "Ejecutar" }).click();
-  await expect(typescript.getByRole("region", { name: "Salida de consola" })).toContainText("production-typescript", { timeout: 30_000 });
+  await expect(typescript.getByRole("region", { name: "Salida de consola" })).toContainText("production-typescript-ok", { timeout: 30_000 });
 });
 
 test("production quiz creates one ten-question attempt", async ({ page }) => {
