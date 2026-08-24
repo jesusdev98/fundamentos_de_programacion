@@ -1,3 +1,3 @@
 export function RunButton({ ready, running, statusLabel, runningLabel = "Ejecutando…", onRun }: { readonly ready: boolean; readonly running: boolean; readonly statusLabel?: string; readonly runningLabel?: string; readonly onRun: () => void }) {
-  return <div className="flex flex-wrap items-center gap-3"><button type="button" className="primary-button" disabled={running || !ready} onClick={onRun}>{running ? runningLabel : "Ejecutar"}</button><span role="status" className="text-xs font-bold text-slate-600">{statusLabel ?? (ready ? "Entorno listo" : "Preparando entorno…")}</span></div>;
+  return <div className="flex flex-wrap items-center gap-3"><button type="button" className="primary-button" disabled={running || !ready} onClick={onRun}>{running ? runningLabel : "Ejecutar"}</button><span role="status" className="font-mono text-xs font-bold text-[#626862]">{statusLabel ?? (ready ? "Entorno listo" : "Preparando entorno…")}</span></div>;
 }

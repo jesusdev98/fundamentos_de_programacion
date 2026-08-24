@@ -1,2 +1,15 @@
 import Link from "next/link";
-export function Footer() { return <footer className="border-t border-slate-200 bg-white"><div className="page-container flex flex-col gap-3 py-7 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between"><span>Fundamentos claros para aprender a programar.</span><Link className="font-bold underline decoration-slate-300 underline-offset-4 hover:decoration-slate-700" href="/fuentes">Fuentes y créditos</Link></div></footer>; }
+
+export function Footer() {
+  return (
+    <footer className="site-footer border-t">
+      <div className="page-container flex flex-col gap-4 py-8 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="font-bold text-[#18201d]">Fundamentos de la Programación</p>
+          <p className="mt-1 text-[#626862]">210 lecciones · 114 ejercicios · 450 preguntas</p>
+        </div>
+        <Link className="text-link inline-flex min-h-11 items-center" href="/fuentes">Fuentes y créditos</Link>
+      </div>
+    </footer>
+  );
+}

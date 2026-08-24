@@ -161,7 +161,7 @@ export function SandboxPlayground({ exercise, onCorrect, language, note, prepare
       <CodeEditor id={editorId} value={code} disabled={busy} language={language} onChange={setCode} onRun={run} />
       <div className="flex flex-wrap items-center justify-between gap-3"><RunButton ready={sandboxReady && !busy} running={busy} runningLabel={phase === "compiling" ? "Comprobando tipos…" : "Ejecutando…"} statusLabel={language === "TypeScript" && phase === "idle" ? "TypeScript se carga al ejecutar" : undefined} onRun={run} /><ExerciseFeedback status={busy ? "executed" : status} /></div>
       <ConsoleOutput messages={result?.messages ?? []} tests={result?.tests ?? []} />
-      <p className="text-xs leading-5 text-slate-500">{note}</p>
+      <p className="max-w-[80ch] text-xs leading-5 text-[#626862]">{note}</p>
     </div>
   );
 }

@@ -18,22 +18,22 @@ export function LearningPathCard({
   linkLabel,
 }: Props) {
   return (
-    <article className="group flex min-h-72 flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-400 hover:shadow-lg">
+    <article className="workspace-card flex min-h-72 flex-col p-6">
       <div className="flex items-start justify-between gap-4">
         <p className="eyebrow">{eyebrow}</p>
         <span
-          className="font-mono text-4xl font-black text-slate-200"
+          className="font-mono text-3xl font-bold text-[#c9c7bc]"
           aria-hidden="true"
         >
           0{index}
         </span>
       </div>
-      <h3 className="mt-8 text-2xl font-black tracking-tight text-slate-950">
+      <h3 className="mt-8 text-2xl font-extrabold tracking-tight">
         {title}
       </h3>
-      <p className="mt-3 flex-1 leading-7 text-slate-600">{description}</p>
+      <p className="mt-3 flex-1 leading-7 text-[#626862]">{description}</p>
       <Link
-        className="mt-6 font-extrabold text-[#bd3f1d] underline-offset-4 hover:underline"
+        className="text-link mt-6 inline-flex min-h-11 items-center"
         href={href}
       >
         {linkLabel} <span aria-hidden="true">→</span>

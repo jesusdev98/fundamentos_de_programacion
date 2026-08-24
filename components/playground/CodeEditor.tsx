@@ -17,9 +17,9 @@ export function CodeEditor({ id, value, disabled, language = "JavaScript", onCha
   }
   return (
     <div>
-      <label className="block text-sm font-black text-slate-950" htmlFor={id}>Editor de {language}</label>
-      <p id={`${id}-help`} className="mt-1 text-xs leading-5 text-slate-500">Enter ejecuta. Shift+Enter inserta una línea. Ctrl/Cmd+Enter también ejecuta todo el editor.</p>
-      <textarea id={id} value={value} disabled={disabled} spellCheck={false} aria-describedby={`${id}-help`} onChange={(event) => onChange(event.target.value)} onKeyDown={handleKeyDown} className="mt-3 min-h-64 w-full resize-y rounded-lg border border-slate-700 bg-[#111827] p-4 font-mono text-sm leading-6 text-slate-100 shadow-inner" />
+      <label className="block font-mono text-xs font-extrabold uppercase tracking-[0.1em]" htmlFor={id}>Editor de {language}</label>
+      <p id={`${id}-help`} className="mt-2 text-xs leading-5 text-[#626862]">Enter ejecuta. Shift+Enter inserta una línea. Ctrl/Cmd+Enter también ejecuta todo el editor.</p>
+      <textarea id={id} value={value} disabled={disabled} spellCheck={false} aria-describedby={`${id}-help`} onChange={(event) => onChange(event.target.value)} onKeyDown={handleKeyDown} className="code-editor mt-3 p-4" />
     </div>
   );
 }

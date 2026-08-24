@@ -123,7 +123,7 @@ export function PythonPlayground({ exercise, onCorrect }: { readonly exercise: E
       <CodeEditor id={editorId} value={code} disabled={phase === "loading" || phase === "running"} language="Python" onChange={setCode} onRun={run} />
       <div className="flex flex-wrap items-center justify-between gap-3"><RunButton ready={phase !== "loading" && phase !== "running"} running={phase === "loading" || phase === "running"} runningLabel={phase === "loading" ? "Cargando Python…" : "Ejecutando…"} statusLabel={statusLabel} onRun={run} /><ExerciseFeedback status={phase === "running" ? "executed" : status} /></div>
       <ConsoleOutput messages={result?.messages ?? []} tests={result?.tests ?? []} />
-      <p className="text-xs leading-5 text-slate-500">Ejecuta CPython 3.14.2 con Pyodide 314.0.4 en un Worker dedicado. input() no está disponible; la red y las APIs del navegador se bloquean después de cargar el runtime. No es una frontera de seguridad perfecta: un bucle puede consumir CPU hasta que el Worker se termina.</p>
+      <p className="max-w-[80ch] text-xs leading-5 text-[#626862]">Ejecuta CPython 3.14.2 con Pyodide 314.0.4 en un Worker dedicado. input() no está disponible; la red y las APIs del navegador se bloquean después de cargar el runtime. No es una frontera de seguridad perfecta: un bucle puede consumir CPU hasta que el Worker se termina.</p>
     </div>
   );
 }

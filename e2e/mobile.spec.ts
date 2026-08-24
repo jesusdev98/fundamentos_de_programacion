@@ -37,3 +37,44 @@ test("theory pages fit the mobile viewport", async ({ page }) => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), route).toBe(true);
   }
 });
+
+test("core learning surfaces fit 360, 375, 390, and 430 pixels", async ({ page }) => {
+  const routes = [
+    "/",
+    "/javascript",
+    "/javascript/facil",
+    "/javascript/facil/teoria",
+    "/javascript/facil/practica",
+    "/javascript/facil/cuestionario",
+    "/fuentes",
+  ];
+
+  for (const width of [360, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const route of routes) {
+      await page.goto(route);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${route} at ${width}px`).toBe(true);
+    }
+
+    await page.goto("/javascript/facil/cuestionario");
+    await page.getByRole("button", { name: "Comenzar intento" }).click();
+    for (let question = 0; question < 10; question += 1) {
+      await page.getByRole("radio").first().check();
+      if (question < 9) await page.getByRole("button", { name: "Siguiente" }).click();
+    }
+    await page.getByRole("button", { name: "Finalizar cuestionario" }).click();
+    await expect(page.locator("#quiz-result-title")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `quiz results at ${width}px`).toBe(true);
+  }
+});
+
+test("Python and TypeScript practice and quiz surfaces fit mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  for (const language of ["python", "typescript"] as const) {
+    for (const section of ["practica", "cuestionario"] as const) {
+      const route = `/${language}/facil/${section}`;
+      await page.goto(route);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), route).toBe(true);
+    }
+  }
+});
