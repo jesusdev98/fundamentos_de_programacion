@@ -6,7 +6,7 @@ const statusLabel = { available: "Disponible", "coming-soon": "Próximamente" } 
 
 export default function Home() {
   return (
-    <main>
+    <main id="contenido-principal" tabIndex={-1}>
       <section className="editorial-hero">
         <div className="page-container py-12 sm:py-16 lg:py-20">
           <p className="editorial-kicker">Workspace de estudio</p>

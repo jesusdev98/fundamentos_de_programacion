@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Fuentes y créditos" };
 
 export default function SourcesPage() {
   return (
-    <main>
+    <main id="contenido-principal" tabIndex={-1}>
       <PageIntro eyebrow="Transparencia" title="Fuentes y créditos" description="Todo el contenido educativo y sus ejemplos fueron redactados para este proyecto. Las referencias oficiales se usan para contrastar conceptos, no para reproducir sus textos o diseños." />
        <div className="page-container space-y-14 py-10 sm:py-14">
         {languages.map((language) => {

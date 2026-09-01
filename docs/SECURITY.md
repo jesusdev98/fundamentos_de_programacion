@@ -62,4 +62,8 @@ The platform is educational, not anti-cheat. Completion state and quiz scores ar
 
 ## Reporting
 
-Report a suspected sandbox escape or unsafe capability privately to the repository owner before publishing reproducible details. Do not include secrets or execute tests against systems you do not own.
+Report a suspected sandbox escape or unsafe capability privately to `jesusdevcontact@gmail.com` before publishing reproducible details. Do not include secrets or execute tests against systems you do not own.
+
+## Privacy Boundary
+
+The application has no registration, accounts, forms, progress backend, analytics, advertising, or application-managed browser storage. Vercel may process normal technical request and security logs as the hosting provider. The browser requests pinned Pyodide assets from jsDelivr only after Python Run; no application claim can guarantee how an independent provider operates its infrastructure. The public notices at `/privacidad` and `/cookies` must be updated before adding a new data-processing or tracking technology.

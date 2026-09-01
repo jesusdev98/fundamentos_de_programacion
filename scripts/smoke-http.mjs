@@ -8,8 +8,8 @@ const curriculumRoutes = curriculumLanguages.flatMap((language) => [
   `/${language}`,
   ...levelSlugs.flatMap((level) => levelSections.map((section) => `/${language}/${level}${section}`)),
 ]);
-const canonicalRoutes = ["/", ...curriculumRoutes, "/fuentes"];
-if (canonicalRoutes.length !== 41) throw new Error(`Expected 41 canonical routes, found ${canonicalRoutes.length}.`);
+const canonicalRoutes = ["/", ...curriculumRoutes, "/fuentes", "/aviso-legal", "/privacidad", "/cookies"];
+if (canonicalRoutes.length !== 44) throw new Error(`Expected 44 canonical routes, found ${canonicalRoutes.length}.`);
 const redirects = new Map([["/javascript/basico", "/javascript/facil"], ["/javascript/basico/teoria", "/javascript/facil/teoria"], ["/javascript/basico/practica", "/javascript/facil/practica"], ["/javascript/basico/cuestionario", "/javascript/facil/cuestionario"]]);
 const externalBaseURL = process.env.SMOKE_BASE_URL;
 let baseURL = `http://127.0.0.1:${port}`;

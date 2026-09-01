@@ -38,7 +38,8 @@ test("theory pages fit the mobile viewport", async ({ page }) => {
   }
 });
 
-test("core learning surfaces fit 360, 375, 390, and 430 pixels", async ({ page }) => {
+test("core learning and transparency surfaces fit 320, 360, 375, 390, and 430 pixels", async ({ page }) => {
+  test.setTimeout(90_000);
   const routes = [
     "/",
     "/javascript",
@@ -47,9 +48,12 @@ test("core learning surfaces fit 360, 375, 390, and 430 pixels", async ({ page }
     "/javascript/facil/practica",
     "/javascript/facil/cuestionario",
     "/fuentes",
+    "/aviso-legal",
+    "/privacidad",
+    "/cookies",
   ];
 
-  for (const width of [360, 375, 390, 430]) {
+  for (const width of [320, 360, 375, 390, 430]) {
     await page.setViewportSize({ width, height: 800 });
     for (const route of routes) {
       await page.goto(route);
@@ -77,4 +81,16 @@ test("Python and TypeScript practice and quiz surfaces fit mobile", async ({ pag
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), route).toBe(true);
     }
   }
+});
+
+test("footer links remain touchable and keyboard focus is visible at 320 pixels", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("/privacidad");
+  const footer = page.getByRole("contentinfo");
+  for (const name of ["Fuentes y créditos", "Aviso legal", "Privacidad", "Cookies"]) {
+    const box = await footer.getByRole("link", { name }).boundingBox();
+    expect(box?.height, name).toBeGreaterThanOrEqual(44);
+  }
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Saltar al contenido principal" })).toBeFocused();
 });

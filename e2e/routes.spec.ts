@@ -42,10 +42,13 @@ const routes = [
   ["/typescript/dificil/practica", "Convierte ideas en código", "Extraer el retorno"],
   ["/typescript/dificil/cuestionario", "Comprueba y repasa", "Banco: 50"],
   ["/fuentes", "Fuentes y créditos", "Mozilla Contributors"],
+  ["/aviso-legal", "Aviso legal", "Jesús Martínez Escobar"],
+  ["/privacidad", "Privacidad", "Alojamiento en Vercel"],
+  ["/cookies", "Cookies", "Uso actual de cookies"],
 ] as const;
 
 test("all canonical routes return HTML with their H1 and expected content", async ({ page }) => {
-  expect(routes).toHaveLength(41);
+  expect(routes).toHaveLength(44);
   for (const [route, heading, content] of routes) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
@@ -100,6 +103,48 @@ test("global header exposes only global navigation", async ({ page }) => {
   await expect(header.getByRole("link", { name: "Lenguajes" })).toBeVisible();
   await expect(header.getByRole("link", { name: "Fuentes" })).toBeVisible();
   for (const level of ["Fácil", "Medio", "Difícil"]) await expect(header.getByRole("link", { name: level, exact: true })).toHaveCount(0);
+});
+
+test("footer exposes transparency routes and the skip link reaches main", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.getByRole("contentinfo");
+  for (const [name, route] of [["Fuentes y créditos", "/fuentes"], ["Aviso legal", "/aviso-legal"], ["Privacidad", "/privacidad"], ["Cookies", "/cookies"]] as const) {
+    const link = footer.getByRole("link", { name });
+    await expect(link).toHaveAttribute("href", route);
+    const box = await link.boundingBox();
+    expect(box?.height, name).toBeGreaterThanOrEqual(44);
+  }
+  await page.keyboard.press("Tab");
+  const skipLink = page.getByRole("link", { name: "Saltar al contenido principal" });
+  await expect(skipLink).toBeFocused();
+  await skipLink.press("Enter");
+  await expect(page).toHaveURL(/#contenido-principal$/);
+  const main = page.locator("main#contenido-principal");
+  await expect(main).toBeVisible();
+  expect(await main.evaluate((element) => document.activeElement === element)).toBe(true);
+});
+
+test("metadata provides a working icon without a favicon fallback request", async ({ page }) => {
+  const faviconRequests: string[] = [];
+  page.on("request", (request) => {
+    if (new URL(request.url()).pathname === "/favicon.ico") faviconRequests.push(request.url());
+  });
+
+  await page.goto("/");
+  const icon = page.locator('link[rel~="icon"]');
+  await expect(icon).toHaveAttribute("href", /\/icon\.svg/);
+  const iconUrl = new URL(await icon.getAttribute("href") ?? "", page.url());
+  const response = await page.request.get(iconUrl.toString());
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toContain("image/svg+xml");
+  expect(faviconRequests).toEqual([]);
+});
+
+test("unknown routes render the not-found page", async ({ page }) => {
+  const response = await page.goto("/ruta-que-no-existe");
+  expect(response?.status()).toBe(404);
+  await expect(page.getByRole("heading", { level: 1, name: "Página no encontrada" })).toBeVisible();
+  await expect(page.locator("main#contenido-principal")).toBeVisible();
 });
 
 test("JavaScript overview navigates to Easy, Medium, and Difficult", async ({ page }) => {

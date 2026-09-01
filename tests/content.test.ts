@@ -7,6 +7,7 @@ import { difficultLessons } from "../data/javascript/difficult/lessons.ts";
 import { difficultQuestions } from "../data/javascript/difficult/questions.ts";
 import { languages } from "../data/languages.ts";
 import { sources } from "../data/sources.ts";
+import sitemap, { canonicalPaths } from "../app/sitemap.ts";
 import { languageIds } from "../types/languages.ts";
 import type { Curriculum, CurriculumLevel } from "../types/curriculum.ts";
 
@@ -41,6 +42,19 @@ test("user-facing copy excludes prohibited voseo forms", () => {
   const files = [...userFacingFiles("app"), ...userFacingFiles("components"), ...userFacingFiles("data/javascript"), ...userFacingFiles("data/python"), ...userFacingFiles("data/typescript"), "data/languages.ts", "data/sources.ts"];
   const violations = files.flatMap((file) => [...readFileSync(file, "utf8").matchAll(prohibitedForms)].map((match) => `${file}: ${match[0]}`));
   assert.deepEqual(violations, []);
+});
+
+test("source IDs are unique and Pyodide references match the pinned runtime", () => {
+  assert.equal(sourceIds.size, sources.length);
+  assert.equal(sources.find((source) => source.id === "pyodide-docs")?.url, "https://pyodide.org/en/314.0.4/");
+  assert.equal(sources.find((source) => source.id === "pyodide-license")?.url, "https://github.com/pyodide/pyodide/blob/314.0.4/LICENSE");
+});
+
+test("sitemap contains only the 44 canonical public pages", () => {
+  assert.equal(canonicalPaths.length, 44);
+  assert.equal(new Set(canonicalPaths).size, 44);
+  assert.equal(sitemap().length, 44);
+  assert.ok(canonicalPaths.every((path) => !path.includes("basico") && !path.includes("typescript-compiler")));
 });
 
 test("every registered curriculum has exact counts and valid relationships", () => {

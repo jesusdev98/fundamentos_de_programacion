@@ -8,7 +8,7 @@ export function ComingSoonHub({ languageId }: { languageId: Exclude<LanguageId, 
   if (!language) throw new Error(`Unknown language: ${languageId}`);
 
   return (
-    <main>
+    <main id="contenido-principal" tabIndex={-1}>
       <section className="language-hero border-b border-slate-200" style={{ "--language-accent": language.accent } as React.CSSProperties}>
         <div className="page-container py-16 sm:py-20">
           <p className="eyebrow">Próximamente</p>

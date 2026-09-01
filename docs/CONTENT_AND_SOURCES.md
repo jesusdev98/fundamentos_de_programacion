@@ -18,7 +18,7 @@ Advanced JavaScript topics use focused MDN references for closures, `this`, prot
 
 TypeScript topics use the official Handbook, TSConfig reference, module/declaration/project-reference guides, performance guidance, TypeScript-Website, and the versioned compiler repository. TypeScript 7.0.2 is the current stable release, but it does not expose a stable programmatic API. The playground therefore pins the real compiler to 5.9.3 for `createProgram`, diagnostics, and emit. Modern decorators follow the semantics supported by 5.9.3 without `experimentalDecorators`; TC39 has not finalized the proposal, and legacy metadata or parameter decorators are not presented as current behavior.
 
-Python topics use the versioned 3.14 tutorial, language reference, standard library, data model, typing, asyncio, import-system, contextlib, iterator/generator, descriptor, MRO, and functools documentation. Editorial claims follow the current stable Python 3.14.7 documentation. Browser practice uses Pyodide 314.0.4, whose embedded interpreter is CPython 3.14.2; the difference is stated rather than hidden.
+Python topics use the versioned 3.14 tutorial, language reference, standard library, data model, typing, asyncio, import-system, contextlib, iterator/generator, descriptor, MRO, and functools documentation. Editorial claims follow the current stable Python 3.14.7 documentation. Browser practice uses Pyodide 314.0.4, whose embedded interpreter is CPython 3.14.2; the difference is stated rather than hidden. Both the documentation and license links target the exact `314.0.4` release used by the runner.
 
 ## Writing Rules
 
@@ -29,6 +29,7 @@ Python topics use the versioned 3.14 tutorial, language reference, standard libr
 - Keep module syntax theoretical while the playground intentionally blocks module loading; never weaken the sandbox to make an example executable.
 - Do not claim that weak collections can be enumerated or that a test can prove garbage collection occurred.
 - Preserve stable lesson, exercise, question, answer, and source IDs after publication.
+- Keep every source ID globally unique and pin runtime documentation to the version actually executed.
 - Link to external material for depth instead of reproducing substantial prose, tables, diagrams, or code.
 
 ## Attribution and Licensing

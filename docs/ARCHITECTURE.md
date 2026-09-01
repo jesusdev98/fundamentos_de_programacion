@@ -22,7 +22,7 @@ The application separates a typed language catalog from a central registry of pu
 
 ## Routes
 
-The application has 41 canonical learning routes: Home, Sources, three language hubs, and four routes per level for all three languages: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents. `/typescript-compiler-5.9.3.js` is a versioned runtime asset endpoint, not a navigable learning route.
+The application has 44 canonical public routes: Home, Sources, three transparency pages, three language hubs, and four routes per level for all three languages: overview, theory, practice, and quiz. Four `/javascript/basico*` pages permanently redirect to their `/javascript/facil*` equivalents. `/typescript-compiler-5.9.3.js` is a versioned runtime asset endpoint, not a navigable page. Redirects and the compiler endpoint are excluded from the 44-entry sitemap.
 
 ## Content Model
 

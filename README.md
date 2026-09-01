@@ -27,7 +27,8 @@ The catalog provides complete JavaScript, TypeScript, and Python curricula with 
 - Output-based and authored-test exercise validation.
 - Hints, solutions, scoring, explanations, and incorrect-answer review.
 - Stable content IDs and official reference links.
-- Responsive App Router interface with Node and Chromium quality gates.
+- Mobile-first App Router interface with Node and Chromium quality gates, including 320 px overflow coverage.
+- Public legal, privacy, cookie, source, sitemap, and robots information based on the deployed architecture.
 
 ## Current Curricula
 
@@ -109,6 +110,10 @@ docs/                Public technical and content documentation
 ## Official References
 
 JavaScript concepts are checked against MDN, ECMAScript/TC39, and focused Node.js references. TypeScript concepts are checked against the official Handbook, TSConfig reference, versioned 5.9.3 compiler repository, and focused official pages. Python concepts are checked against the Python 3.14 tutorial, language reference, standard library, and focused official pages; Pyodide behavior is checked against its official documentation. The global catalog is available at `/fuentes`; source and licensing boundaries are documented in [Content and Sources](docs/CONTENT_AND_SOURCES.md).
+
+## Transparency
+
+The site has no accounts, forms, saved progress, analytics, or advertising. Vercel may process technical hosting logs, and the browser contacts jsDelivr for pinned Pyodide assets only after a learner runs Python. See `/aviso-legal`, `/privacidad`, and `/cookies` for the public Spanish-language notices.
 
 ## Contributing
 

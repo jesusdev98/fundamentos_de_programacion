@@ -253,8 +253,8 @@ const pythonSources = [
   { id: "python-copy", name: "copy — Shallow and deep copy operations", organization: "Python Software Foundation", url: "https://docs.python.org/3.14/library/copy.html", type: "documentation" },
   { id: "python-pattern-matching", name: "Structural pattern matching", organization: "Python Software Foundation", url: "https://docs.python.org/3.14/tutorial/controlflow.html#match-statements", type: "guide" },
   { id: "python-functools", name: "functools — Higher-order functions", organization: "Python Software Foundation", url: "https://docs.python.org/3.14/library/functools.html", type: "documentation" },
-  { id: "pyodide-docs", name: "Pyodide documentation", organization: "Pyodide contributors", url: "https://pyodide.org/en/0.29.4/", type: "documentation", note: "El runner fija la distribución 314.0.4, que incorpora CPython 3.14.2." },
-  { id: "pyodide-license", name: "Pyodide license", organization: "Pyodide contributors", url: "https://github.com/pyodide/pyodide/blob/0.29.4/LICENSE", type: "license", licensingNote: "Pyodide se distribuye bajo Mozilla Public License 2.0. Los paquetes disponibles conservan sus propias licencias." },
+  { id: "pyodide-docs", name: "Pyodide documentation", organization: "Pyodide contributors", url: "https://pyodide.org/en/314.0.4/", type: "documentation", note: "El runner fija la distribución 314.0.4, que incorpora CPython 3.14.2." },
+  { id: "pyodide-license", name: "Pyodide license", organization: "Pyodide contributors", url: "https://github.com/pyodide/pyodide/blob/314.0.4/LICENSE", type: "license", licensingNote: "Pyodide se distribuye bajo Mozilla Public License 2.0. Los paquetes disponibles conservan sus propias licencias." },
   {
     id: "python-license",
     name: "Python history and license",

@@ -32,7 +32,7 @@ Generated JavaScript sandbox code, `public/python-worker.mjs`, and `public/types
 
 ## HTTP Smoke
 
-`scripts/smoke-http.mjs` derives the three-language route matrix, asserts 41 canonical routes, verifies they return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
+`scripts/smoke-http.mjs` derives the three-language route matrix, adds Sources and the three transparency pages, asserts 44 canonical routes, verifies they return 200, verifies all four legacy routes return 308 with the expected target, and then terminates the server.
 
 When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin without starting a local server. External redirects may use relative or absolute locations, but must remain on the requested origin and resolve to the expected path.
 
@@ -40,7 +40,7 @@ When `SMOKE_BASE_URL` is set, the same checks run against that HTTP(S) origin wi
 
 `playwright.config.ts` uses `http://127.0.0.1:3000`, Chromium only, Desktop Chrome for the complete suite, and the official Pixel 7 Chromium device for one focused mobile spec. Local and CI runs serve an existing production build with `next start`, so run `pnpm build` before `pnpm test:e2e`. Retries and a single worker are CI-only. HTML plus console or GitHub reporting is enabled, with first-retry traces and failure-only screenshots and videos.
 
-The current normal matrix contains 59 tests across seven specs: 58 Desktop Chrome tests plus one focused Mobile Chrome test. Production mode remains a separate two-test `Production Chrome` matrix.
+The current normal matrix contains 65 tests across seven specs: 60 Desktop Chrome tests plus five focused Mobile Chrome tests. Production mode remains a separate two-test `Production Chrome` matrix.
 
 Tests use accessible roles, labels, names, and web-first assertions. They do not use fixed sleeps, external navigation, shared test state, or app-only answer exposure. Quiz helpers import the authored banks in test code and map the visible prompt to the correct or deliberately incorrect answer text.
 
@@ -69,12 +69,12 @@ Production verification is intentionally smaller than the local suite. With `PLA
 
 | Flow | Test | Spec | Desktop | Mobile | Status |
 | --- | --- | --- | :---: | :---: | --- |
-| 41 canonical routes | HTTP status, H1, expected content, no app error | `routes.spec.ts` | Yes | No | Automated |
+| 44 canonical routes | HTTP status, H1, expected content, no app error | `routes.spec.ts` | Yes | No | Automated |
 | 4 legacy redirects | Exact 308 and `/javascript/facil*` target | `routes.spec.ts` | Yes | No | Automated |
 | Global landing and header | Title, language states, anchor, Sources, all language hubs, global-only navigation | `routes.spec.ts` | Yes | Partial | Automated |
 | JavaScript overview → levels | Link navigation and final URLs | `routes.spec.ts` | Yes | Partial | Automated |
 | Easy/Medium/Difficult path navigation | Theory, Practice, Quiz links | `routes.spec.ts` | Yes | Partial | Automated |
-| Sources navigation | Internal route and source catalog | `routes.spec.ts` | Yes | No | Automated |
+| Sources and transparency | Footer links, legal/privacy/cookie content, source catalog, skip link, 404 | `routes.spec.ts` | Yes | Partial | Automated |
 | Easy theory | 24 lessons, examples, references, key points | `theory.spec.ts` | Yes | No | Automated |
 | Medium theory | 22 lessons, examples, references, key points | `theory.spec.ts` | Yes | No | Automated |
 | Difficult theory | 24 lessons, examples, references, key points | `theory.spec.ts` | Yes | No | Automated |
@@ -100,4 +100,4 @@ Production verification is intentionally smaller than the local suite. With `PLA
 | TypeScript compiler timeout | Hard termination and fresh successful Worker | `typescript.spec.ts` | Yes | No | Automated |
 | TypeScript authored validations | 38 solutions through real createProgram/VFS and runtime when applicable | `typescript.spec.ts` | Yes | No | Automated |
 | TypeScript quizzes | Three 50-question banks, attempts of ten, four options, score and review | `quiz.spec.ts` | Yes | No | Automated |
-| Mobile smoke | Home, JavaScript practice/quiz, Difficult selector, and Python/TypeScript access | `mobile.spec.ts` | No | Yes | Automated |
+| Mobile smoke | Home, navigation, JavaScript practice/quiz, Python/TypeScript access, 320/360/375/390/430 overflow, footer touch targets and focus | `mobile.spec.ts` | No | Yes | Automated |

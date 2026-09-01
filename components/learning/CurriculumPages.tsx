@@ -8,7 +8,7 @@ import { PageIntro } from "./PageIntro";
 
 export function CurriculumOverview({ curriculum }: { readonly curriculum: Curriculum }) {
   return (
-    <main className="language-scope" data-language={curriculum.languageId}>
+    <main id="contenido-principal" tabIndex={-1} className="language-scope" data-language={curriculum.languageId}>
       <section className="editorial-hero">
         <div className="language-strip page-container py-12 pl-5 sm:py-16 sm:pl-7">
           <p className="eyebrow">Ruta de aprendizaje</p>
@@ -41,7 +41,7 @@ export function LevelOverview({ curriculum, level }: { readonly curriculum: Curr
     { eyebrow: "Banco de 50", title: "Cuestionario", description: "Resuelve una muestra aleatoria de diez preguntas y revisa errores.", href: `${basePath}/cuestionario`, linkLabel: "Comenzar cuestionario" },
   ];
   return (
-    <main className="language-scope" data-language={curriculum.languageId}>
+    <main id="contenido-principal" tabIndex={-1} className="language-scope" data-language={curriculum.languageId}>
       <header className="editorial-hero">
         <div className="language-strip page-container py-12 pl-5 sm:py-16 sm:pl-7">
           <p className="eyebrow">Nivel {level.adjective}</p>
@@ -58,7 +58,7 @@ export function LevelOverview({ curriculum, level }: { readonly curriculum: Curr
 
 export function TheoryContent({ curriculum, level }: { readonly curriculum: Curriculum; readonly level: CurriculumLevel }) {
   return (
-    <main className="language-scope" data-language={curriculum.languageId}>
+    <main id="contenido-principal" tabIndex={-1} className="language-scope" data-language={curriculum.languageId}>
       <PageIntro eyebrow={`${level.name} · Teoría`} title="Comprende antes de memorizar" description={`${level.lessons.length} lecciones originales con ejemplos breves, puntos clave y referencias para profundizar.`} />
       <div className="page-container grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 py-8 sm:py-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start">
         <nav className="contents-nav max-h-[70vh] overflow-y-auto p-5 lg:sticky lg:top-6" aria-label="Contenido de teoría">
@@ -76,9 +76,9 @@ export function TheoryContent({ curriculum, level }: { readonly curriculum: Curr
 }
 
 export function PracticeContent({ curriculum, level }: { readonly curriculum: Curriculum; readonly level: CurriculumLevel }) {
-  return <main className="language-scope" data-language={curriculum.languageId}><PageIntro eyebrow={`${level.name} · Práctica`} title="Convierte ideas en código" description="Ejecuta cada solución en un entorno aislado. Los ejercicios simples validan la salida y los complejos usan pruebas educativas." /><div className="page-container max-w-5xl space-y-5 py-8 sm:py-12">{level.exercises.map((exercise) => <ExerciseCard key={exercise.id} exercise={exercise} runner={curriculum.runner} />)}</div></main>;
+  return <main id="contenido-principal" tabIndex={-1} className="language-scope" data-language={curriculum.languageId}><PageIntro eyebrow={`${level.name} · Práctica`} title="Convierte ideas en código" description="Ejecuta cada solución en un entorno aislado. Los ejercicios simples validan la salida y los complejos usan pruebas educativas." /><div className="page-container max-w-5xl space-y-5 py-8 sm:py-12">{level.exercises.map((exercise) => <ExerciseCard key={exercise.id} exercise={exercise} runner={curriculum.runner} />)}</div></main>;
 }
 
 export function QuizContent({ curriculum, level, levelSlug }: { readonly curriculum: Curriculum; readonly level: CurriculumLevel; readonly levelSlug: LevelSlug }) {
-  return <main className="language-scope" data-language={curriculum.languageId}><PageIntro eyebrow={`${level.name} · Cuestionario`} title="Comprueba y repasa" description="Cada intento elige diez preguntas únicas del banco de cincuenta y baraja sus cuatro respuestas." /><div className="page-container max-w-4xl py-8 sm:py-12"><Quiz bank={level.questions} languageName={curriculum.languageName} theoryBasePath={`/${curriculum.languageId}/${levelSlug}/teoria`} /></div></main>;
+  return <main id="contenido-principal" tabIndex={-1} className="language-scope" data-language={curriculum.languageId}><PageIntro eyebrow={`${level.name} · Cuestionario`} title="Comprueba y repasa" description="Cada intento elige diez preguntas únicas del banco de cincuenta y baraja sus cuatro respuestas." /><div className="page-container max-w-4xl py-8 sm:py-12"><Quiz bank={level.questions} languageName={curriculum.languageName} theoryBasePath={`/${curriculum.languageId}/${levelSlug}/teoria`} /></div></main>;
 }
